@@ -35,8 +35,8 @@ parser.add_argument("-e", "--envs", type=str,
 parser.add_argument("-o", "--outdir", type=str,
                     help="Directory where output will go", required=True)
 
-# parser.add_argument("-sc", "--snakemake_cores", type=str,
-#                     help="Number of cores for Snakemake", default=4)
+parser.add_argument("-sc", "--snakemake_cores", type=str,
+                    help="Number of cores for Snakemake", default=6)
 
 parser.add_argument("-i", "--illuminaclip", type=str,
                     help="Choose the Illuminaclip that will be used with Trimmomatic", required=True)
@@ -46,6 +46,7 @@ args = parser.parse_args()
 r1 = args.read_1
 r2 = args.read_2
 envs_path = args.envs
+sc = args.sc
 illuminaclip = args.illuminaclip
 
 #create output directory
@@ -75,7 +76,7 @@ d = {"output": outdir, "forward": r1, "reverse": r2, "conda_path": conda_profile
 #create config file
 config_path = methods.config(outdir, d)
 
-os.system(f"snakemake --directory {outdir} --snakefile {snake_dir} rgi -c6 --configfile {config_path}")
+os.system(f"snakemake --directory {outdir} --snakefile {snake_dir} rgi -c{sc} --configfile {config_path}")
 # os.system(f"snakemake --snakefile /mmfs1/home/4565alin/READS2ARGS/workflow/Snakefile -c6 --use-conda --conda-create-envs-only")
 
 #potentially add onto a file in the main output folder to create a read pair - assembly dictionary
