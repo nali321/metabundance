@@ -3,7 +3,7 @@ ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
 ID = config["id"]
 
-rule rgi:
+rule genomad:
     input:
         assembly=f"{OUTPUT}/metaspades/contigs.fasta"
     output:

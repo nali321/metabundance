@@ -1,6 +1,5 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
-ILLUMINACLIP = config["illuminaclip"]
 CONDA_PATH = config["conda_path"]
 ID = config["id"]
 MUSCLE = config["muscle"]
