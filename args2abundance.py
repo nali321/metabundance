@@ -97,13 +97,16 @@ for i in range(0, len(rp_order), 2):
     d = {"output": outdir, "forward": rp1, "reverse": rp2, "conda_path": conda_profile,
         "envs_path": envs_path, "illuminaclip": "N/A", "all_args": f"{fasta_path}",
         "id": rpnum, "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
-        "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "faa_file": f"{faa_path}/{rpnum}.faa"}
+        "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "faa_file": f"{faa_path}/{rpnum}.faa",
+        "targets": ["kallisto", "shortbred_quantify"], "target_output": {"kallisto": f"{outdir}/kallisto/read_pair_{rpnum}/abundance.tsv", 
+                                                                         "shortbred_quantify": f"{outdir}/shortbred/shortbred_quantify/read_pair_{rpnum}/results.tsv"}}
 
     #create config file
     config_path = methods.config(outdir, d)
 
     #call snakemake with 4 cores and call two rules, expecting 4 rules to run at once in parallel
-    os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} kallisto shortbred_quantify -c6 --configfile {config_path}")
+    # os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} kallisto shortbred_quantify -c6 --configfile {config_path}")
+    os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} -c6 --configfile {config_path}")
 
     #match rpnum to rp filename
     rpnum_rp[rpnum] = rp_order[i]

@@ -8,3 +8,7 @@ include: "rules/kallisto_index.smk"
 include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
+
+rule all:
+    input:
+        expand("{output_rule}", output_rule=[config["target_output"][rule_name] for rule_name in config["target_rules"]])
