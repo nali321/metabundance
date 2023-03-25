@@ -105,8 +105,7 @@ for i in range(0, len(rp_order), 2):
     config_path = methods.config(outdir, d)
 
     #call snakemake with 4 cores and call two rules, expecting 4 rules to run at once in parallel
-    # os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} kallisto shortbred_quantify -c6 --configfile {config_path}")
-    os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} -c6 --configfile {config_path}")
+    os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} kallisto shortbred_quantify -c6 --configfile {config_path}")
 
     #match rpnum to rp filename
     rpnum_rp[rpnum] = rp_order[i]
