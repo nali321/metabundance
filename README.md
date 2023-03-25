@@ -6,7 +6,7 @@ Metabundance output is supposed to be used primarily with Phyloseq in R. It give
 
 Metabundance also functions as a way to link together ARG contigs with mobile genetic elements (MGEs), as well as finding the taxonomy of each contig that an ARG is on.
 
-Metabundance uses many depenencies in its pipeline, therefore a script with
+Metabundance uses many depenencies in its pipeline, therefore a script (conda_installer.py) is used to download every single dependency and save it within a separate file containing conda environments (much like how Snakemake can create temporary conda environments).
 
 PREQUISITIES:
 - Must be ran on Linux
