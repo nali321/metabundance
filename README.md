@@ -12,6 +12,8 @@ PREQUISITIES:
 - Must be ran on Linux
 - Must have Miniconda installed
 - Must have Mamba installed
+- Read pairs need to be labelled properly:
+  - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fq.gz
 
 STEPS:
 
