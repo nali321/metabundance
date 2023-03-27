@@ -2,25 +2,6 @@ import os
 import argparse
 import methods
 
-#pipeline steps:
-#PART 1:
-#1. trim read pairs
-#2. assemble metagenome
-#3. annotate metagenome with RGI - DO STEPS 1-3 SEPARATELY
-
-#PART 2:
-#4. Data processing steps: - START HERE FOR TESTING PURPOSES!!!
-    #a. Create a FASTA file of all DNA sequences from RGI
-    #b. Create a protein FASTA file for each sample with only ARGs from it
-#5. Run Kallisto by mapping read pairs back to ARG FASTA file
-#6. Create input files for Metagenomseq:
-    #a. Create ARG - read pair counts matrix
-    #b. Create taxa table where OTU 1-Max ARG Number is matched with it's subsequent RGI data row
-    #c. Supply phenotype file from user
-#7. Create Metagenomseq object in R and obtain normalized counts matrix
-#8. Use shortbred identify and quantify with individual ARG .faa files
-#9. Create files for phyloseq to use
-
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-a", "--annotations", type=str,
