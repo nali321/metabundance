@@ -53,7 +53,7 @@ with open (conda_path_file, 'r') as file:
         break
 
 #prepare reads for snakemake use
-rp_order = methods.nsort(reads_path, False)
+rp_order = methods.nsort(reads_path, True)
 
 #check if folder is good
 methods.check_reads(len(rp_order))
