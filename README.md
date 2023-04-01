@@ -8,16 +8,16 @@ Metabundance also functions as a way to link together ARG contigs with mobile ge
 
 Metabundance uses many depenencies in its pipeline, therefore a script (conda_installer.py) is used to download every single dependency and save it within a separate file containing conda environments (much like how Snakemake can create temporary conda environments).
 
-Note: taxonomic identifiation of metagenomic assemblies can take multiple days depending on size of your dataset. Therefore, installation of SprayNPray will have to be done manually, and the conda environment path must be given to metabundace.py to enable taxonomic idenfication in the pipeline if you so choose to.
+Note: taxonomic identifiation of metagenomic assemblies can take multiple days depending on size of your dataset. Therefore, installation of SprayNPray will have to be done manually, and the conda environment name must be given to metabundace.py to enable taxonomic idenfication in the pipeline if you choose to do so.
 
-PREQUISITIES:
+## PREQUISITIES:
 - Must be ran on Linux
 - Must have Miniconda installed
 - Must have Mamba installed
 - Read pairs need to be labelled properly:
   - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fq.gz
 
-STEPS:
+## STEPS:
 
 1. Run conda_installer.py to create environments for pipeline
 
