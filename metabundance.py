@@ -27,7 +27,7 @@ args = parser.parse_args()
 
 reads_path = args.reads
 envs_path = args.envs
-sc = args.sc
+sc = args.snakemake_cores
 illuminaclip = args.illuminaclip
 metadata = args.metadata
 
