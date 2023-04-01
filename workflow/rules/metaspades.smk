@@ -5,15 +5,15 @@ ID = config["id"]
 
 rule metaspades:
     input:
-        one=f"{OUTPUT}/trimmed/forward_paired.fq.gz",
-        two=f"{OUTPUT}/trimmed/reverse_paired.fq.gz",
-        s=f"{OUTPUT}/trimmed/forward_unpaired.fq.gz"
+        one=f"{OUTPUT}/trimmed/{{sample}}/forward_paired.fq.gz",
+        two=f"{OUTPUT}/trimmed/{{sample}}/reverse_paired.fq.gz",
+        s=f"{OUTPUT}/trimmed/{{sample}}/forward_unpaired.fq.gz"
     output:
-        assembly=f"{OUTPUT}/metaspades/contigs.fasta"
+        assembly=f"{OUTPUT}/metaspades/{{sample}}/contigs.fasta"
     shell:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/spades
-        metaspades.py -o {OUTPUT}/metaspades -1 {input.one} -2 {input.two} -s {input.s} -m 128 -k 33,55,77,99 -t 16
+        metaspades.py -o {OUTPUT}/metaspades/{{sample}} -1 {input.one} -2 {input.two} -s {input.s} -m 128 -k 33,55,77,99 -t 16
         conda deactivate
         '''

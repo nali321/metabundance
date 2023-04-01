@@ -1,3 +1,5 @@
+from snakemake.io import glob_wildcards
+
 #set any external variables
 configfile: "config.yaml"
 
@@ -9,6 +11,12 @@ include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
+DIR = config["reads"]
+
+SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
+
 rule all:
     input:
-        expand("{output_rule}", output_rule=[config["target_output"][rule_name] for rule_name in config["target_rules"]])
+        expand(f"{OUTPUT}/trimmed/{{sample}}/forward_paired.fq.gz", sample=SAMPLES),
+        expand(f"{OUTPUT}/metaspades/{{sample}}/contigs.fasta", sample=SAMPLES),
+        expand(f"{OUTPUT}/rgi/{{sample}}/final.txt", sample=SAMPLES)
