@@ -12,4 +12,4 @@ rule integron_finder:
         source {CONDA_PATH}
         conda activate {ENVS}/integron_finder
         integron_finder {input.assembly} --outdir {OUTPUT}/integron_finder/{wildcards.sample}
-        ''''
+        '''
