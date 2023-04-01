@@ -1,7 +1,6 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
-ID = config["id"]
 MUSCLE = config["muscle"]
 USEARCH = config["usearch"]
 
