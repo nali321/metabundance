@@ -67,14 +67,14 @@ sample_ids = [i for i in range(1, rp_total+1)]
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "all_args": "N/A",
+    "illuminaclip": illuminaclip, "fasta": "N/A",
     "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": "annotations"}
 
 #create config file
 config_path = methods.config(outdir, d)
 
 #call snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} --rule all --configfile {config_path}")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
 
 # #collect all rgi, genomad, integron output files
 # os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total-1} {outdir}")

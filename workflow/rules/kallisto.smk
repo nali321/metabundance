@@ -1,6 +1,7 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
+DIR = config["reads"]
 
 rule kallisto:
     input:

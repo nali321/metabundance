@@ -3,7 +3,7 @@ ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
 MUSCLE = config["muscle"]
 USEARCH = config["usearch"]
-FASTA = config["all_args"]
+FASTA = config["fasta"]
 
 rule shortbred_identify:
     input:
