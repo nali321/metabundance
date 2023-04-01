@@ -3,16 +3,16 @@ from snakemake.io import glob_wildcards
 #set any external variables
 configfile: "config.yaml"
 
-# include: "rules/trim_reads.smk"
-# include: "rules/metaspades.smk"
-# include: "rules/rgi.smk"
-# include: "rules/genomad.smk"
-# include: "rules/integron_finder.smk"
-# include: "rules/spraynpray.smk"
-# include: "rules/kallisto_index.smk"
-# include: "rules/kallisto.smk"
-# include: "rules/shortbred_identify.smk"
-# include: "rules/shortbred_quantify.smk"
+include: "rules/trim_reads.smk"
+include: "rules/metaspades.smk"
+include: "rules/rgi.smk"
+include: "rules/genomad.smk"
+include: "rules/integron_finder.smk"
+include: "rules/spraynpray.smk"
+include: "rules/kallisto_index.smk"
+include: "rules/kallisto.smk"
+include: "rules/shortbred_identify.smk"
+include: "rules/shortbred_quantify.smk"
 
 DIR = config["reads"]
 OUTPUT = config["output"]
@@ -27,8 +27,8 @@ SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 # RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
-rule all:
-    input: 
-        expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES)
-        # expand(f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv", sample=SAMPLES),
-        # expand(f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", sample=SAMPLES)
+# rule all:
+#     input: 
+#         expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES),
+#         expand(f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv", sample=SAMPLES),
+#         expand(f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", sample=SAMPLES)
