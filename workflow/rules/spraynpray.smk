@@ -14,4 +14,4 @@ rule spraynpray:
         spray-and-pray.py -g {assembly.input} \
         -out {OUTPUT}/spraynpray/{wildcards.sample} \
         -ref /mmfs1/home/4565alin/build/spraynpraydb/nr.faa
-        ''''
+        '''
