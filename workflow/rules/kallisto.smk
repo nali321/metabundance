@@ -8,7 +8,7 @@ rule kallisto:
         forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
         reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
-        abundance=f"{OUTPUT}/kallisto/read_pair_{ID}/abundance.tsv"
+        abundance=f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv"
     shell:
         '''
         source {CONDA_PATH}
