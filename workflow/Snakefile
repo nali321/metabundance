@@ -14,6 +14,8 @@ include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
+SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
+
 RULE_ALL_DICT = {
     "annotations": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
     f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
@@ -22,8 +24,6 @@ RULE_ALL_DICT = {
 
 DIR = config["reads"]
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
-
-SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 rule all:
     input: 
