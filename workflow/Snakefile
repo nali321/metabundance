@@ -14,6 +14,9 @@ include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
+DIR = config["reads"]
+RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
+
 SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 RULE_ALL_DICT = {
@@ -21,9 +24,6 @@ RULE_ALL_DICT = {
     f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
     "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
 }
-
-DIR = config["reads"]
-RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
 rule all:
     input: 
