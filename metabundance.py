@@ -79,7 +79,7 @@ config_path = methods.config(outdir, d)
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
 
 #collect all rgi, genomad, integron output files
-os.system(f"bash {home_dir}/gather_annotations.sh {rp_total-1} {outdir}")
+os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total-1} {outdir}")
 
 #create the FASTA and .faa files
 uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
@@ -99,7 +99,7 @@ config_path = methods.config(outdir, d)
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
 
 #gather all kallisto and shortbred output files
-os.system(f"bash {home_dir}/gather_abundance.sh {rp_total-1} {outdir}")
+os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total-1} {outdir}")
 
 #gather kallisto and shortbred counts
 first_col = methods.counts(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
