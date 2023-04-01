@@ -13,6 +13,6 @@ rule metaspades:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/spades
-        metaspades.py -o {OUTPUT}/metaspades/{{sample}} -1 {input.one} -2 {input.two} -s {input.s} -m 128 -k 33,55,77,99 -t 16
+        metaspades.py -o {OUTPUT}/metaspades/{wildcards.sample} -1 {input.one} -2 {input.two} -s {input.s} -m 128 -k 33,55,77,99 -t 16
         conda deactivate
         '''

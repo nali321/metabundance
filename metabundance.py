@@ -64,16 +64,22 @@ rp_total = int(len(rp_order)/2)
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
 
-#create config file
+#create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "all_args": "N/A", "faa_file": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", 
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
-    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa"}
+    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "rgi"}
 
 #create config file
 config_path = methods.config(outdir, d)
 
 #call snakemake
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
+
+#collect all rgi files
+
+#create config file for abundance run
+
+#gather all kallisto, shortbred, genomad, and spraynpray output files

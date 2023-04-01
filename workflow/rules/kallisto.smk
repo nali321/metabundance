@@ -13,6 +13,6 @@ rule kallisto:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/kallisto
-        kallisto quant -i {input.idx} -o {OUTPUT}/kallisto/read_pair_{ID} {input.forward_reads} {input.reverse_reads}
+        kallisto quant -i {input.idx} -o {OUTPUT}/kallisto/{{sample}} {input.forward_reads} {input.reverse_reads}
         conda deactivate
         '''

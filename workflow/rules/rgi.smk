@@ -11,7 +11,7 @@ rule rgi:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/rgi
-        cd {OUTPUT}/rgi/{{sample}}
+        cd {OUTPUT}/rgi/{wildcards.sample}
         rgi main --input_sequence {input.assembly} --output_file final -a DIAMOND --input_type contig --include_loose
         conda deactivate
         '''

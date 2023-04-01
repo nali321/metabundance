@@ -4,14 +4,15 @@ CONDA_PATH = config["conda_path"]
 
 rule genomad:
     input:
-        assembly=f"{OUTPUT}/metaspades/contigs.fasta"
+        assembly=f"{OUTPUT}/metaspades/{{sample}}/contigs.fasta"
     output:
-        args=f"{OUTPUT}/rgi/final.txt"
+        plasmid=f"{OUTPUT}/rgi/final.txt"
+        virus=f"{OUTPUT}/genomad/{{sample}}/"
     shell:
         '''
         source {CONDA_PATH}
-        conda activate {ENVS}/rgi
-        cd {OUTPUT}/rgi
-        rgi main --input_sequence {input.assembly} --output_file final -a DIAMOND --input_type contig --include_loose
-        conda deactivate
+        conda activate genomad
+        cp {input.assembly} ~/wastewater_samples_1/concat/genomad/read_pair_"$i"
+        cd ~/wastewater_samples_1/concat/genomad/read_pair_"$i"
+        genomad end-to-end contigs.fasta {{sample}} /mmfs1/home/4565alin/build/genomad/genomad_db
         '''

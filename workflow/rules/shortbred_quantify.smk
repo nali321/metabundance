@@ -6,18 +6,18 @@ USEARCH = config["usearch"]
 
 rule shortbred_quantify:
     input:
-        markers=f"{OUTPUT}/shortbred/shortbred_identify/{{sample}}/markers.faa",
+        markers=f"{OUTPUT}/shortbred_identify/{{sample}}/markers.faa",
         forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
         reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
-        abundance=f"{OUTPUT}/shortbred/shortbred_quantify/{{sample}}/results.tsv"
+        abundance=f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"
     shell:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/shortbred
         shortbred_quantify.py --markers {input.markers} --wgs {input.forward_reads} \
         {input.reverse_reads} --results {output.abundance} \
-        --tmp {OUTPUT}/shortbred/shortbred_quantify/{{sample}}/tmp_quantify \
+        --tmp {OUTPUT}/shortbred_quantify/{{sample}}/tmp_quantify \
         --usearch {USEARCH}
         conda deactivate
         '''

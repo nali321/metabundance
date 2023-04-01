@@ -12,8 +12,14 @@ include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
 DIR = config["reads"]
+RULE_ALL = config["rule_all"]
 
 SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
+
+RULE_ALL_DICT = {
+    "rgi": f"{OUTPUT}/rgi/{{sample}}/final.txt",
+    "abundance": [f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"]
+}
 
 rule all:
     input:
