@@ -25,10 +25,6 @@ RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
 SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
-# rule all:
-#     input:
-#         expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES)
-
 rule all:
     input: 
         expand_files = [file for file_pattern in RULE_ALL for file in expand(file_pattern, sample=SAMPLES)]

@@ -27,9 +27,9 @@ def check_reads(size):
         raise ValueError("There must be an even number of reads greater than 0 in the folder.")
 
 #takes all of the annotation output files and creates a FASTA file from it
-def fasta(all_fasta, outdir):
+def fasta(all_rgi, outdir):
     # numerically order files
-    num_order = nsort(all_fasta, False)
+    num_order = nsort(all_rgi, False)
 
     repeat_seqs = set()
     uid_tracker = {}
@@ -40,7 +40,7 @@ def fasta(all_fasta, outdir):
     for filename in num_order:
         head = ''
         header = True
-        with open (os.path.join(all_fasta, filename).replace("\\", "/"), 'r') as file:
+        with open (os.path.join(all_rgi, filename).replace("\\", "/"), 'r') as file:
             for line in file:
                 z = line.split("\t")
                 entry = [x.strip() for x in z]
@@ -177,7 +177,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
                     if len(vars) > 1:
                         outer[str(vars[1])][str(vars[0])] = z[1]
 
-    #create OTU label column
+    #create id label column
     df2["ID"] = first_col
 
     #extract assigned, in order dictionary values
@@ -200,67 +200,64 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 
     return first_col
 
-#create otu table
-#uid_tracker[x]: rpnum, entry
-#NEED TWO COLUMNS SAYING IF DRUG CLASSES/GENE FAMILIES ARE SINGLE/MULTIPLE
+#create observation matrix
 def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
     df["ID"] = first_col
     outer = {}
 
-    #extract user specified sample - treatment info
+    #extract user provided sample metadata
     treatments_dict = {}
     header = True
     with open (treatments, 'r') as file:
         for line in file:
             z = line.split(",")
-            print(z)
-            # z = [o.replace("\n", "").replace("\t", "").strip for o in z]
+
+            #grab header names if on first line
             if header == True:
                 for x in z[1:]:
                     head.append(x)
+            
+            #otherwise take first column of sample ids as keys and metadata info as values
             else:
                 treatments_dict[z[0]] = z[1:]
             header = False
     i = 0
     
+    #name some pre-established column headers for the matrix
     head.append("DC_MULTIPLE")
     head.append("AMRGF_MULTIPLE")
     head.append("read_pair_number")
 
-    print(treatments_dict)
-
-    #create a nested dictionary for every otu row
-    # for x in range(1, int(list(uid_tracker)[-1])+1):
-    #     outer[str(x)] = {}
+    #create an empty list for each column header that requisite info
+    #will be appended to
     for x in head:
         outer[x] = []
 
     #dictionary the rgi information
     for x in uid_tracker:
-        otu_info = uid_tracker[x][1]
+        arg_info = uid_tracker[x][1]
 
-        #add on the user supplied treatment information to otu rows
+        #add on the user supplied treatment information to arg rows
         for q in treatments_dict[uid_tracker[x][0]]:
-            otu_info.append(q)
+            arg_info.append(q)
         
         #add on if drug class/amr gene family is multiple
-        if ";" in otu_info[14]:
-            otu_info.append("MULTIPLE")
+        if ";" in arg_info[14]:
+            arg_info.append("MULTIPLE")
         else:
-            otu_info.append("SINGLE")
-        if ";" in otu_info[16]:
-            otu_info.append("MULTIPLE")
+            arg_info.append("SINGLE")
+        if ";" in arg_info[16]:
+            arg_info.append("MULTIPLE")
         else:
-            otu_info.append("SINGLE")
+            arg_info.append("SINGLE")
         
         #append read pair number last
-        otu_info.append(uid_tracker[x][0])
+        arg_info.append(uid_tracker[x][0])
 
-        # print(otu_info)
-        #get index of otu row info to match the corresponding header name in head
-        for y in range(len(otu_info)):
-            outer[head[y]].append(str(otu_info[y]).replace("\t", "").replace("\n", "").strip())
+        #get index of arg row info to match the corresponding header name in head
+        for y in range(len(arg_info)):
+            outer[head[y]].append(str(arg_info[y]).replace("\t", "").replace("\n", "").strip())
         
     #extract assigned, in order dictionary values
     for x in outer:
@@ -268,4 +265,5 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
 
     df.to_csv(os.path.join(outdir, "observations.csv").replace("\\", "/"), sep=',', index=False)
 
+#create ways to attach genomad and integron finder data
 # def genomad(plasmid, virus, outdir):

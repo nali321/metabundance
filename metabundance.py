@@ -39,9 +39,9 @@ except OSError as error:
     print(error)
 
 #get the snakefile, script, and dependencies path
-self_dir = os.path.dirname(os.path.abspath(__file__))
-snake_dir = os.path.join(self_dir, "workflow/Snakefile")
-scripts_dir = os.path.join(self_dir, "workflow/scripts")
+home_dir = os.path.dirname(os.path.abspath(__file__))
+snake_dir = os.path.join(home_dir, "workflow/Snakefile")
+scripts_dir = os.path.join(home_dir, "workflow/scripts")
 dep = os.path.join(envs_path, "dependencies").replace("\\", "/")
 
 #get conda profile path
@@ -78,8 +78,25 @@ config_path = methods.config(outdir, d)
 #call snakemake
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
 
-#collect all rgi files
+#collect all rgi, genomad, integron output files
+os.system(f"bash {home_dir}/gather_annotations.sh {rp_total-1} {outdir}")
+
+#create the FASTA and .faa files
+uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
 
 #create config file for abundance run
+d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
+    "conda_path": conda_profile, "envs_path": envs_path,
+    "illuminaclip": illuminaclip, "all_args": fasta_path,
+    "muscle": f"{dep}/muscle3.8.31_i86linux64", 
+    "usearch": f"{dep}/usearch11.0.667_i86linux32", 
+    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
-#gather all kallisto, shortbred, genomad, and spraynpray output files
+#gather all kallisto and shortbred output files
+os.system(f"bash {home_dir}/gather_abundance.sh {rp_total-1} {outdir}")
+
+#gather kallisto and shortbred counts
+first_col = methods.counts(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
+
+#create observation table
+methods.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
