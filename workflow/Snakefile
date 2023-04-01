@@ -27,4 +27,4 @@ SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 rule all:
     input: 
-        expand_files = [file for file_pattern in RULE_ALL for file in expand(file_pattern, sample=SAMPLES)]
+        [file for file_pattern in RULE_ALL for file in expand(file_pattern, sample=SAMPLES)]
