@@ -6,7 +6,7 @@ rule genomad:
     input:
         assembly=f"{OUTPUT}/metaspades/{{sample}}/contigs.fasta"
     output:
-        plasmid=f"{OUTPUT}/genomad/{{sample}}/contigs_summary/contigs_plasmid_summary.tsv"
+        plasmid=f"{OUTPUT}/genomad/{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
         virus=f"{OUTPUT}/genomad/{{sample}}/contigs_summary/contigs_virus_summary.tsv"
     shell:
         '''
