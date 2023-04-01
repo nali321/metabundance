@@ -16,6 +16,7 @@ include: "rules/shortbred_quantify.smk"
 
 DIR = config["reads"]
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
+OUTPUT = config["output"]
 
 SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
