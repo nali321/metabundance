@@ -15,7 +15,7 @@ include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
 RULE_ALL_DICT = {
-    "annotations": [f"{OUTPUT}/rgi/{{sample}}/final.txt", f"{OUTPUT}/genomad/{{sample}}/contigs_plasmid_summary.tsv",
+    "annotations": [f"{OUTPUT}/rgi/{{sample}}/final.txt", f"{OUTPUT}/genomad/{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
     f"{OUTPUT}/integron_finder/{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
     "abundance": [f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"]
 }
