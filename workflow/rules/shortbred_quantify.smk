@@ -7,8 +7,8 @@ USEARCH = config["usearch"]
 rule shortbred_quantify:
     input:
         markers=f"{OUTPUT}/shortbred/shortbred_identify/read_pair_{ID}/markers.faa",
-        forward_reads=config["forward"],
-        reverse_reads=config["reverse"]
+        forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
+        reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
         abundance=f"{OUTPUT}/shortbred/shortbred_quantify/read_pair_{ID}/results.tsv"
     shell:

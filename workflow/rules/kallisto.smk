@@ -5,8 +5,8 @@ CONDA_PATH = config["conda_path"]
 rule kallisto:
     input:
         idx=f"{OUTPUT}/kallisto/args.idx",
-        forward_reads=config["forward"],
-        reverse_reads=config["reverse"]
+        forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
+        reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
         abundance=f"{OUTPUT}/kallisto/read_pair_{ID}/abundance.tsv"
     shell:
