@@ -11,7 +11,7 @@ parser.add_argument("-e", "--envs", type=str,
                     help="Filepath to environments folder", required=True)
 
 parser.add_argument("-sc", "--snakemake_cores", type=str,
-                    help="Number of cores for Snakemake", default=6)
+                    help="Number of cores for Snakemake", default="6")
 
 parser.add_argument("-i", "--illuminaclip", type=str,
                     help="Choose the Illuminaclip that will be used with Trimmomatic", required=True)
@@ -76,4 +76,4 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
 config_path = methods.config(outdir, d)
 
 #call snakemake
-os.system(f"snakemake -j 4 --directory {outdir} --snakefile {snake_dir} kallisto shortbred_quantify -c{sc} --configfile {config_path}")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
