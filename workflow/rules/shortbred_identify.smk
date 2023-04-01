@@ -9,13 +9,13 @@ rule shortbred_identify:
         proteins=config["faa_file"],
         ref_markers=config["CARD_markers"],
     output:
-        markers=f"{OUTPUT}/shortbred_identify/{{sample}}/markers.faa"
+        markers=f"{OUTPUT}/shortbred_identify/read_pair_{{sample}}/markers.faa"
     shell:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/shortbred
         shortbred_identify.py --goi {input.proteins} \
-        --ref {input.ref_markers} --tmp {OUTPUT}/shortbred_identify/{{sample}} \
+        --ref {input.ref_markers} --tmp {OUTPUT}/shortbred_identify/read_pair_{wildcards.sample} \
         --markers {output.markers} --usearch {USEARCH} \
         --muscle {MUSCLE} \
         --cdhit {ENVS}/cdhit/bin/cd-hit \

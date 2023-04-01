@@ -5,14 +5,14 @@ CONDA_PATH = config["conda_path"]
 rule kallisto:
     input:
         idx=f"{OUTPUT}/kallisto/args.idx",
-        forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
-        reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
+        forward_reads=f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz",
+        reverse_reads=f"{DIR}/read_pair_{{sample}}_R2_001.fastq.gz"
     output:
-        abundance=f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv"
+        abundance=f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv"
     shell:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/kallisto
-        kallisto quant -i {input.idx} -o {OUTPUT}/kallisto/{{sample}} {input.forward_reads} {input.reverse_reads}
+        kallisto quant -i {input.idx} -o {OUTPUT}/kallisto/read_pair_{wildcards.sample} {input.forward_reads} {input.reverse_reads}
         conda deactivate
         '''

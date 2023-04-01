@@ -15,19 +15,19 @@ include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
 RULE_ALL_DICT = {
-    "annotations": [f"{OUTPUT}/rgi/{{sample}}/final.txt", f"{OUTPUT}/genomad/{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
-    f"{OUTPUT}/integron_finder/{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
-    "abundance": [f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"]
+    "annotations": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
+    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
+    "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
 }
 
 DIR = config["reads"]
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
-SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
+SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 # rule all:
 #     input:
-#         expand(f"{OUTPUT}/rgi/{{sample}}/final.txt", sample=SAMPLES)
+#         expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES)
 
 rule all:
     input: 
