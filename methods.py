@@ -68,7 +68,10 @@ def fasta(all_rgi, outdir):
                 header = False
 
     #create FASTA file
-    os.mkdir(outdir)
+    try:
+        os.mkdir(outdir)
+    except OSError as error:
+        print(error)
     with open (os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
         for x in uid_tracker:
             f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
@@ -77,8 +80,11 @@ def fasta(all_rgi, outdir):
             else:
                 protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
 
-    #create .faa files          
-    os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
+    #create .faa files
+    try:
+        os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
+    except OSError as error:
+        print(error)  
     for x in protein_tracker:
         with open (os.path.join(outdir, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
             for y in protein_tracker[x]:

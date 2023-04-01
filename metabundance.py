@@ -92,6 +92,12 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
+#create 2nd config file
+config_path = methods.config(outdir, d)
+
+#second call of snakemake
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
+
 #gather all kallisto and shortbred output files
 os.system(f"bash {home_dir}/gather_abundance.sh {rp_total-1} {outdir}")
 

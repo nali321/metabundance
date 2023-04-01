@@ -3,10 +3,11 @@ ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
 MUSCLE = config["muscle"]
 USEARCH = config["usearch"]
+FASTA = config["all_args"]
 
 rule shortbred_identify:
     input:
-        proteins=config["faa_file"],
+        proteins=f"{FASTA}/protein_files/{{sample}}.faa",
         ref_markers=config["CARD_markers"],
     output:
         markers=f"{OUTPUT}/shortbred_identify/read_pair_{{sample}}/markers.faa"
