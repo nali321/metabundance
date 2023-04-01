@@ -29,6 +29,6 @@ SAMPLES, = glob_wildcards(f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz")
 
 rule all:
     input: 
-        expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES),
-        expand(f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv", sample=SAMPLES),
-        expand(f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", sample=SAMPLES)
+        expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES)
+        # expand(f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv", sample=SAMPLES),
+        # expand(f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", sample=SAMPLES)
