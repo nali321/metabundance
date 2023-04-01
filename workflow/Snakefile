@@ -26,14 +26,15 @@ RULE_ALL_DICT = {
 }
 
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
+print(RULE_ALL)
 
-def generate_all_input():
+def generate_input_files(rule_group):
+    file_patterns = RULE_ALL_DICT[rule_group]
     input_files = []
-    for file_pattern in RULE_ALL:
+    for file_pattern in file_patterns:
         for file in expand(file_pattern, sample=SAMPLES):
             input_files.append(file)
     return input_files
 
 rule all:
-    input: 
-        generate_all_input()
+    input: generate_input_files(config["rule_all"])
