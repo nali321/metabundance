@@ -31,9 +31,6 @@ def fasta(all_fasta, outdir):
     # numerically order files
     num_order = nsort(all_fasta, False)
 
-    #track files by number order here
-    rpnum = 1
-
     repeat_seqs = set()
     uid_tracker = {}
     uid = 1
@@ -47,7 +44,7 @@ def fasta(all_fasta, outdir):
             for line in file:
                 z = line.split("\t")
                 entry = [x.strip() for x in z]
-                rpnum2 = filename.split(".")[0].split("_")[0]
+                rpnum = filename.split(".")[0].split("_")[0]
 
                 #ignore header line
                 # if "Best_Hit_ARO" not in z:
@@ -61,16 +58,14 @@ def fasta(all_fasta, outdir):
                         #ensure there exists a protein-DNA sequence combo before adding the entry
                         #number every successful entry add with a universal id and store in dictionary
                         if entry[18] != "" and entry[17] != "":
-                            uid_tracker[uid] = (rpnum2, entry, entry[18])
+                            uid_tracker[uid] = (rpnum, entry, entry[18])
                             uid+=1
                         elif entry[19] != "" and entry[17] != "":
-                            uid_tracker[uid] = (rpnum2, entry, entry[19])
+                            uid_tracker[uid] = (rpnum, entry, entry[19])
                             uid+=1
                 elif header == True:
                     head = z
                 header = False
-                
-        rpnum+=1
 
     #create FASTA file
     os.mkdir(outdir)
@@ -147,7 +142,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
     del first_col[-1]
 
     #place rows in df to create columns for counts file
-    df["OTU"] = first_col
+    df["ID"] = first_col
 
     for x in fin:
         header = f"read_pair_{x[0]}"
@@ -183,7 +178,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
                         outer[str(vars[1])][str(vars[0])] = z[1]
 
     #create OTU label column
-    df2["OTU"] = first_col
+    df2["ID"] = first_col
 
     #extract assigned, in order dictionary values
     fin = []
@@ -208,9 +203,9 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 #create otu table
 #uid_tracker[x]: rpnum, entry
 #NEED TWO COLUMNS SAYING IF DRUG CLASSES/GENE FAMILIES ARE SINGLE/MULTIPLE
-def otu(uid_tracker, head, first_col, treatments, outdir):
+def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
-    df["OTU"] = first_col
+    df["ID"] = first_col
     outer = {}
 
     #extract user specified sample - treatment info
@@ -271,6 +266,6 @@ def otu(uid_tracker, head, first_col, treatments, outdir):
     for x in outer:
         df[x.strip("\n")] = outer[x]
 
-    df.to_csv(os.path.join(outdir, "otu.csv").replace("\\", "/"), sep=',', index=False)
+    df.to_csv(os.path.join(outdir, "observations.csv").replace("\\", "/"), sep=',', index=False)
 
 # def genomad(plasmid, virus, outdir):
