@@ -70,7 +70,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "illuminaclip": illuminaclip, "all_args": "N/A", "faa_file": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", 
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
-    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "rgi"}
+    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "annotations"}
 
 #create config file
 config_path = methods.config(outdir, d)

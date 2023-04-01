@@ -6,21 +6,31 @@ configfile: "config.yaml"
 include: "rules/trim_reads.smk"
 include: "rules/metaspades.smk"
 include: "rules/rgi.smk"
+include: "rules/genomad.smk"
+include: "rules/integron_finder.smk"
+include: "rules/spraynpray.smk"
 include: "rules/kallisto_index.smk"
 include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
+RULE_ALL_DICT = {
+    "annotations": [f"{OUTPUT}/rgi/{{sample}}/final.txt", f"{OUTPUT}/genomad/{{sample}}/contigs_plasmid_summary.tsv",
+    f"{OUTPUT}/integron_finder/{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
+    "abundance": [f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"]
+}
+
 DIR = config["reads"]
 RULE_ALL = config["rule_all"]
 
+FILE_PATTERNS = RULE_ALL_DICT[selected_group]
+
 SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
 
-# RULE_ALL_DICT = {
-#     "rgi": f"{OUTPUT}/rgi/{{sample}}/final.txt",
-#     "abundance": [f"{OUTPUT}/kallisto/{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/{{sample}}/results.tsv"]
-# }
+# rule all:
+#     input:
+#         expand(f"{OUTPUT}/rgi/{{sample}}/final.txt", sample=SAMPLES)
 
 rule all:
-    input:
-        expand(f"{OUTPUT}/rgi/{{sample}}/final.txt", sample=SAMPLES)
+    input: 
+        expand_files = [file for file_pattern in FILE_PATTERNS for file in expand(file_pattern, sample=SAMPLES)]
