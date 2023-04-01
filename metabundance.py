@@ -67,7 +67,7 @@ sample_ids = [i for i in range(1, rp_total+1)]
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "all_args": "N/A", "faa_file": "N/A",
+    "illuminaclip": illuminaclip, "all_args": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", 
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "annotations"}

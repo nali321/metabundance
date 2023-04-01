@@ -5,7 +5,7 @@ FASTA = config["all_args"]
 
 rule kallisto_index:
     input:
-        args={FASTA}/annotations.FASTA
+        args=f"{FASTA}/annotations.FASTA"
     output:
         idx=f"{OUTPUT}/kallisto/args.idx"
     shell:
