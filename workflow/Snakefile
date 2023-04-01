@@ -21,9 +21,7 @@ RULE_ALL_DICT = {
 }
 
 DIR = config["reads"]
-RULE_ALL = config["rule_all"]
-
-FILE_PATTERNS = RULE_ALL_DICT[selected_group]
+RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
 SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
 
@@ -33,4 +31,4 @@ SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
 
 rule all:
     input: 
-        expand_files = [file for file_pattern in FILE_PATTERNS for file in expand(file_pattern, sample=SAMPLES)]
+        expand_files = [file for file_pattern in RULE_ALL for file in expand(file_pattern, sample=SAMPLES)]
