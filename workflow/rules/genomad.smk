@@ -13,4 +13,4 @@ rule genomad:
         source {CONDA_PATH}
         conda activate {ENVS}/genomad
         genomad end-to-end {input.assembly} {OUTPUT}/genomad/{wildcards.sample} {ENVS}/genomad/genomad_db
-        ''''
+        '''
