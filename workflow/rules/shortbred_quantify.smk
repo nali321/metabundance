@@ -8,8 +8,8 @@ DIR = config["reads"]
 rule shortbred_quantify:
     input:
         markers=f"{OUTPUT}/shortbred_identify/read_pair_{{sample}}/markers.faa",
-        forward_reads=f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz",
-        reverse_reads=f"{DIR}/read_pair_{{sample}}_R2_001.fastq.gz"
+        forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
+        reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
         abundance=f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"
     shell:

@@ -6,8 +6,8 @@ DIR = config["reads"]
 
 rule trim_reads:
     input:
-        forward_reads=f"{DIR}/read_pair_{{sample}}_R1_001.fastq.gz",
-        reverse_reads=f"{DIR}/read_pair_{{sample}}_R2_001.fastq.gz"
+        forward_reads=f"{DIR}/{{sample}}_R1_001.fastq.gz",
+        reverse_reads=f"{DIR}/{{sample}}_R2_001.fastq.gz"
     output:
         forward_paired=f"{OUTPUT}/trimmed/read_pair_{{sample}}/forward_paired.fq.gz",
         forward_unpaired=f"{OUTPUT}/trimmed/read_pair_{{sample}}/forward_unpaired.fq.gz",
