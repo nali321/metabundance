@@ -22,7 +22,9 @@ Note: taxonomic identifiation of metagenomic assemblies can take multiple days d
 ### Setup
 1. Run conda_installer.py to create environments for pipeline
 
-```python /path/to/conda_installer.py stuff```
+```
+python /path/to/conda_installer.py stuff
+```
 
 2. Run reads2args.py to create metagenomic assemblies and annotate them
 
