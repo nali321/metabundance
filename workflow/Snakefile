@@ -17,19 +17,20 @@ include: "rules/shortbred_quantify.smk"
 DIR = config["reads"]
 OUTPUT = config["output"]
 
+#use R1 files to extract sample numbers
 SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
 
 RULE_ALL_DICT = {
     "annotations": [f"{OUTPUT}/rgi/read_pair_{sample}/final.txt", f"{OUTPUT}/genomad/read_pair_{sample}/contigs_summary/contigs_plasmid_summary.tsv",
-    f"{OUTPUT}/integron_finder/read_pair_{sample}/Results_Integron_Finder_contigs/contigs.integrons" for sample in SAMPLES],
-    "abundance": [f"{OUTPUT}/kallisto/read_pair_{sample}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{sample}/results.tsv" for sample in SAMPLES]
+    f"{OUTPUT}/integron_finder/read_pair_{sample}/Results_Integron_Finder_contigs/contigs.integrons"],
+    "abundance": [f"{OUTPUT}/kallisto/read_pair_{sample}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{sample}/results.tsv"]
 }
 
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
 rule all:
     input:
-        RULE_ALL
+        expand(RULE_ALL, sample=SAMPLES)
         # expand(f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", sample=SAMPLES),
         # expand(f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv", sample=SAMPLES),
         # expand(f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", sample=SAMPLES)
