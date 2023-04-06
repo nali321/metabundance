@@ -64,6 +64,9 @@ rp_total = int(len(rp_order)/2)
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
 
+#set snakemake cache directory in case previous output files need to be remembered
+os.system("mkdir -p .snakemake/cache")
+
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
