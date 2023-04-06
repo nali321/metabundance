@@ -25,6 +25,11 @@ parser.add_argument("-o", "--outdir", type=str,
 
 args = parser.parse_args()
 
+#attempt to set the cache environmental variable for snakemake to re-use files if re-running
+#the snakefile for debugging purposes
+cache_dir = '.snakemake/cache'
+os.environ['SNAKEMAKE_OUTPUT_CACHE'] = cache_dir
+
 reads_path = args.reads
 envs_path = args.envs
 sc = args.snakemake_cores
@@ -63,9 +68,6 @@ rp_total = int(len(rp_order)/2)
 
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
-
-#set snakemake cache directory in case previous output files need to be remembered
-os.system("mkdir -p .snakemake/cache")
 
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
