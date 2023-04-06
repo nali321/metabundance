@@ -94,7 +94,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
 config_path2 = methods.config(d, "config2", outdir)
 
 #second call of snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2} --reason")
 
 #gather all kallisto and shortbred output files
 os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
