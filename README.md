@@ -1,6 +1,6 @@
 # metabundance
 
-Metabundance is a pipeline designed to trim, assemble, and annotate metagenomic assemblies from paired fastq files, then find abundance of antibiotic-resistance genes (ARGs) from within and between samples.
+Metabundance is a pipeline designed to trim, assemble, and annotate metagenomic assemblies from paired FASTQ files, then find abundance of antibiotic-resistance genes (ARGs) from within and between samples.
 
 Metabundance output is supposed to be used primarily with Phyloseq in R. It gives you two matrices (samples as columns, genes as rows) of abundance data, as well as an observation matrix (gene information as columns, genes as rows), that are to be used as the inputs to create Phyloseq objects. 
 
@@ -17,8 +17,8 @@ Note: taxonomic identifiation of metagenomic assemblies can take multiple days d
 - Read pairs need to be labelled properly:
   - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fq.gz
 
-## STEPS:
-
+## SETUP:
+### Setup
 1. Run conda_installer.py to create environments for pipeline
 
 2. Run reads2args.py to create metagenomic assemblies and annotate them
