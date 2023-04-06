@@ -1,6 +1,6 @@
 # metabundance
 
-Metabundance is a pipeline designed to investigate metagenomic paired FASTQ reads at the assembly level and find abundance of antibiotic-resistance genes (ARGs) from within and between samples. It handles trimming the reads, creating the assemblies, and annotating various elements of the assemblies.
+Metabundance is a pipeline designed to investigate metagenomic paired FASTQ reads at the assembly level and find abundance of antibiotic-resistance genes (ARGs) from within and between samples. It handles trimming the reads as well as creating and annotating the assemblies.
 
 Metabundance output is supposed to be used primarily with Phyloseq in R. It gives you two matrices (samples as columns, genes as rows) of abundance data, as well as an observation matrix (gene information as columns, genes as rows), that are to be used as the inputs to create Phyloseq objects. 
 
