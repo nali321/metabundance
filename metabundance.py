@@ -85,7 +85,7 @@ uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outd
 #create config file for abundance run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "all_args": fasta_path,
+    "illuminaclip": illuminaclip, "fasta": fasta_path,
     "muscle": f"{dep}/muscle3.8.31_i86linux64", 
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
