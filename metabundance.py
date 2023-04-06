@@ -74,7 +74,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
 config_path = methods.config(outdir, d)
 
 #call snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path} --cache")
 
 #collect all rgi, genomad, integron output files
 os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
@@ -94,7 +94,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
 config_path = methods.config(outdir, d)
 
 #second call of snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path}")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path} --cache")
 
 #gather all kallisto and shortbred output files
 os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
