@@ -60,7 +60,6 @@ methods.check_reads(len(rp_order))
 
 #get total number of read pairs
 rp_total = int(len(rp_order)/2)
-print(rp_total)
 
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
