@@ -16,7 +16,7 @@ Note: taxonomic identifiation of metagenomic assemblies can take multiple days d
 - Must have Mamba installed
 - Read pairs need to be labelled properly:
   - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fq.gz
-- If you want taxonomy data, you need to download SprayNPray (https://github.com/Arkadiy-Garber/SprayNPray) as a conda environment
+- If you want taxonomy data, you need to download [SprayNPray](https://github.com/Arkadiy-Garber/SprayNPray) as a conda environment
 
 ## Usage Guide:
 ### Setup
