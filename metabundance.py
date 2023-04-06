@@ -105,4 +105,4 @@ first_col = methods.counts(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all
 #create observation table
 methods.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
 
-#attach genomad, 
+#attach genomad, integron, and spraynpray (if needed)

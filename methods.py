@@ -273,6 +273,8 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
         
     #extract assigned, in order dictionary values
     for x in outer:
+        if x == "ID":
+            print(x)
         df[x.strip("\n")] = outer[x]
 
     df.to_csv(os.path.join(outdir, "observations.csv").replace("\\", "/"), sep=',', index=False)
