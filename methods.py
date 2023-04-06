@@ -149,7 +149,6 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
     for i in rpnums:
         for y in range(len(outer)):
             if str(outer[y][0]) == i:
-                print(str(outer[y][0]))
                 fin.append(outer[y])
     
     del first_col[-1]
@@ -159,7 +158,6 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 
     for x in fin:
         header = f"read_pair_{x[0]}"
-        print(header)
         x.pop(0)
         df[header] = x
 
@@ -275,7 +273,7 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
     #extract assigned, in order dictionary values
     for x in outer:
         if x == "ID":
-            print(x)
+            print(outer[x])
         df[x.strip("\n")] = outer[x]
 
     df.to_csv(os.path.join(outdir, "observations.csv").replace("\\", "/"), sep=',', index=False)
