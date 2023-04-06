@@ -15,8 +15,8 @@ def nsort(dir, full_path):
     return nsort
 
 #creates the config file for the snakefile
-def config(outdir, d):
-    path = os.path.join(f"{outdir}", "config.yaml").replace("\\", "/")
+def config(d, name, outdir):
+    path = os.path.join(f"{outdir}", f"{name}.yaml").replace("\\", "/")
     with open (path, "w") as outfile:
         yaml.dump(d, outfile)
     return path

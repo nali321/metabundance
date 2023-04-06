@@ -25,11 +25,6 @@ parser.add_argument("-o", "--outdir", type=str,
 
 args = parser.parse_args()
 
-#attempt to set the cache environmental variable for snakemake to re-use files if re-running
-#the snakefile for debugging purposes
-cache_dir = '.snakemake/cache'
-os.environ['SNAKEMAKE_OUTPUT_CACHE'] = cache_dir
-
 reads_path = args.reads
 envs_path = args.envs
 sc = args.snakemake_cores
@@ -45,7 +40,7 @@ except OSError as error:
 
 #get the snakefile, script, and dependencies path
 home_dir = os.path.dirname(os.path.abspath(__file__))
-snake_dir = os.path.join(home_dir, "workflow/Snakefile")
+snake_dir = os.path.join(home_dir, "workflow")
 scripts_dir = os.path.join(home_dir, "workflow/scripts")
 dep = os.path.join(envs_path, "dependencies").replace("\\", "/")
 
@@ -72,14 +67,14 @@ sample_ids = [i for i in range(1, rp_total+1)]
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A",
+    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "snp": "N/A",
     "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": "annotations"}
 
 #create config file
-config_path = methods.config(outdir, d)
+config_path = methods.config(d, "config1", outdir)
 
-#call snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path} --cache")
+#call annotations snakefile
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path}")
 
 #collect all rgi, genomad, integron output files
 os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
@@ -90,16 +85,16 @@ uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outd
 #create config file for abundance run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": fasta_path, "protein": faa_path,
+    "illuminaclip": illuminaclip, "fasta": fasta_path, "protein": faa_path, "snp": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64",
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
 #create 2nd config file
-config_path = methods.config(outdir, d)
+config_path2 = methods.config(d, "config2", outdir)
 
 #second call of snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir} all --configfile {config_path} --cache")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
 
 #gather all kallisto and shortbred output files
 os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
