@@ -95,6 +95,12 @@ def fasta(all_rgi, outdir):
 
 #make the three files for metagenomseq
 def counts(uid_tracker, kallisto, shortbred, outdir):
+    #create outdir
+    try:
+        os.mkdir(outdir)
+    except OSError as error:
+        print(error)
+
     first_col = []
     outer = []
     rpnums = []
