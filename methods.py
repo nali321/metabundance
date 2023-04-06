@@ -67,31 +67,32 @@ def fasta(all_rgi, outdir):
                     head = z
                 header = False
 
-    #create FASTA file
-    try:
-        os.mkdir(outdir)
-    except OSError as error:
-        print(error)
-    with open (os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
-        for x in uid_tracker:
-            f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
-            if uid_tracker[x][0] not in protein_tracker:
-                protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
-            else:
-                protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
+    # #create FASTA file
+    # try:
+    #     os.mkdir(outdir)
+    # except OSError as error:
+    #     print(error)
+    # with open (os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
+    #     for x in uid_tracker:
+    #         f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
+    #         if uid_tracker[x][0] not in protein_tracker:
+    #             protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
+    #         else:
+    #             protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
 
-    #create .faa files
-    try:
-        os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
-    except OSError as error:
-        print(error)  
-    for x in protein_tracker:
-        with open (os.path.join(outdir, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
-            for y in protein_tracker[x]:
-                # f.write(f">{x}|{y[0]}\n{y[2]}\n")
-                f.write(f">{y[0]}|{x}\n{y[2]}\n")
+    # #create .faa files
+    # try:
+    #     os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
+    # except OSError as error:
+    #     print(error)
+    # for x in protein_tracker:
+    #     with open (os.path.join(outdir, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
+    #         for y in protein_tracker[x]:
+    #             # f.write(f">{x}|{y[0]}\n{y[2]}\n")
+    #             f.write(f">{y[0]}|{x}\n{y[2]}\n")
 
-    return uid_tracker, protein_tracker, os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), os.path.join(outdir, "protein_files").replace("\\", "/"), head
+    # return uid_tracker, protein_tracker, os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), os.path.join(outdir, "protein_files").replace("\\", "/"), head
+    return uid_tracker, protein_tracker, head
 
 #make the three files for metagenomseq
 def counts(uid_tracker, kallisto, shortbred, outdir):

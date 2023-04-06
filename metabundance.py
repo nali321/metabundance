@@ -80,13 +80,47 @@ os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/
 os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
 
 #create the FASTA and .faa files
-uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
+#if you're re-running the snakefile and the annotations.FASTA or .faa files get re-made due to
+#this being re-ran, then it'll re-run the kallisto and shortbred rules because the input files
+#were updated since the previous run
+# uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
+uid_tracker, protein_tracker, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
+
+#create FASTA file
+fasta_path = f"{outdir}/fasta"
+try:
+    os.mkdir(outdir)
+#throw an error if the folder doesn't exist
+except OSError as error:
+    print(error)
+#if the folder was just created, create the input files. this way you can re-run snakefile and have the
+#kallisto and shortbred steps not be re-ran
+else:
+    with open (os.path.join(fasta_path, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
+        for x in uid_tracker:
+            f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
+            if uid_tracker[x][0] not in protein_tracker:
+                protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
+            else:
+                protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
+
+#create .faa files
+faa_path = os.path.join(fasta_path, "protein_files")
+try:
+    os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
+except OSError as error:
+    print(error)
+else:
+    for x in protein_tracker:
+        with open (os.path.join(outdir, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
+            for y in protein_tracker[x]:
+                f.write(f">{y[0]}|{x}\n{y[2]}\n")
 
 #create config file for abundance run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": fasta_path, "protein": faa_path, "snp": "N/A",
-    "muscle": f"{dep}/muscle3.8.31_i86linux64",
+    "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
+    "protein": faa_path, "snp": "N/A", "muscle": f"{dep}/muscle3.8.31_i86linux64",
     "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
@@ -94,7 +128,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
 config_path2 = methods.config(d, "config2", outdir)
 
 #second call of snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2} --reason")
+os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
 
 #gather all kallisto and shortbred output files
 os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
