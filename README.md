@@ -17,15 +17,17 @@ Metabundance's output gives you two matrices of abundance data, as well as an ob
 git clone https://github.com/nali321/metabundance
 ```
 
-## Usage Guide:
-### Setup
+## Setup:
 Run conda_installer.py to create environments for pipeline
 
 ```
 python /path/to/conda_installer.py -o /path/to/envs
 ```
 
-This pipeline was originally designed on an HPC-server without internet access on clusters, therefore pre-installing the conda environments/dependencies before running the Snakemake pipeline was implemented. Effectively the same result is achieved if the conda module was used on Snakemake, where the conda environment are specifically downloaded to a separate folder instead of your main envs folder.
+This pipeline was originally designed on an HPC-server without internet access on clusters, therefore pre-installing the conda environments/dependencies before running the Snakemake pipeline was implemented. This achieves the same result as if the conda module was used on Snakemake, where the conda environments are specifically downloaded to a separate folder instead of your main envs folder.
 
-### Running the pipeline
-
+## Usage Guide:
+### Quick Start
+```
+python /path/to/metabundance.py
+```
