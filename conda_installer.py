@@ -3,9 +3,6 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-# parser.add_argument("-c", "--conda_profile", type=str,
-#                     help="Filepath to conda profile", required=True)
-
 parser.add_argument("-o", "--outdir", type=str,
                     help="Directory where environments will go", required=True)
 

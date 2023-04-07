@@ -26,31 +26,30 @@ def check_reads(size):
     if size == 0 or size % 2 != 0:
         raise ValueError("There must be an even number of reads greater than 0 in the folder.")
 
-#takes all of the annotation output files and creates a FASTA file from it
-def fasta(all_rgi, outdir):
+#takes all of the annotation output files and creates a dictionary of
+#labelled ARGs used to create the main FASTA file and individual .faa filesj
+def fasta(all_rgi):
     # numerically order files
-    num_order = nsort(all_rgi, False)
-
+    num_order = nsort(all_rgi, False) 
     repeat_seqs = set()
     uid_tracker = {}
     uid = 1
     protein_tracker = {}
 
-    #loop over the annotations folder and record every line
+    #loop over the RGI output files and record every ARG
     for filename in num_order:
         head = ''
         header = True
         with open (os.path.join(all_rgi, filename).replace("\\", "/"), 'r') as file:
             for line in file:
+                #split by tab, remove newlines from every split value, 
+                #and extract sample number from filename (number will always be first)
                 z = line.split("\t")
                 entry = [x.strip() for x in z]
                 rpnum = filename.split(".")[0].split("_")[0]
 
                 #ignore header line
-                # if "Best_Hit_ARO" not in z:
                 if header != True:
-                    
-                    # arg_tracker.append((z[8].replace(' ', '_'), z[17].replace(' ', '_'), z[16].replace(' ', '_'), z[14], rpnum, z[18], z[19]))
                     #do not add anything with repeat sequences
                     if entry[17] not in repeat_seqs or entry[18] not in repeat_seqs or entry[19] not in repeat_seqs:
                         repeat_seqs.update((entry[17], entry[18], entry[19]))
@@ -63,53 +62,33 @@ def fasta(all_rgi, outdir):
                         elif entry[19] != "" and entry[17] != "":
                             uid_tracker[uid] = (rpnum, entry, entry[19])
                             uid+=1
+
+                #if in the header, grab all the column names
                 elif header == True:
                     head = z
                 header = False
 
-    # #create FASTA file
-    # try:
-    #     os.mkdir(outdir)
-    # except OSError as error:
-    #     print(error)
-    # with open (os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
-    #     for x in uid_tracker:
-    #         f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
-    #         if uid_tracker[x][0] not in protein_tracker:
-    #             protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
-    #         else:
-    #             protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
-
-    # #create .faa files
-    # try:
-    #     os.mkdir(os.path.join(outdir, "protein_files").replace("\\", "/"))
-    # except OSError as error:
-    #     print(error)
-    # for x in protein_tracker:
-    #     with open (os.path.join(outdir, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
-    #         for y in protein_tracker[x]:
-    #             # f.write(f">{x}|{y[0]}\n{y[2]}\n")
-    #             f.write(f">{y[0]}|{x}\n{y[2]}\n")
-
-    # return uid_tracker, protein_tracker, os.path.join(outdir, "annotations.FASTA").replace("\\", "/"), os.path.join(outdir, "protein_files").replace("\\", "/"), head
     return uid_tracker, protein_tracker, head
 
-#make the three files for metagenomseq
-def counts(uid_tracker, kallisto, shortbred, outdir):
+#make the kallisto and shortbred abundance matrices
+def count_matrices(uid_tracker, kallisto, shortbred, outdir):
     #create outdir
     try:
         os.mkdir(outdir)
     except OSError as error:
         print(error)
 
+    #initliaze the two df's for eventual csv creation
+    df = pd.DataFrame()
+    df2 = pd.DataFrame()
+
     first_col = []
     outer = []
     rpnums = []
-    df = pd.DataFrame()
-    df2 = pd.DataFrame()
     checked = False
     gene_count = 1
 
+    #sort the files in numerical order
     num_order = nsort(kallisto, False)
 
     #iterate through kallisto files and create matrix
@@ -138,14 +117,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
             checked = True
     
     #reorder columns numerically
-    #if you ever have to take a number out, then q=i+1 doesn't work
-    #ex: since rp7 isn't usable, 7 will be indexed over, but 17 will not
     fin = []
-    # for i in range(len(outer)):
-    #     q = i+1
-    #     for y in range(len(outer)):
-    #         if int(outer[y][0]) == q:
-    #             fin.append(outer[y])
     for i in rpnums:
         for y in range(len(outer)):
             if str(outer[y][0]) == i:
@@ -156,6 +128,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
     #place rows in df to create columns for counts file
     df["ARG_ID"] = first_col
 
+    #attach all other header names and values to the dataframe
     for x in fin:
         header = f"read_pair_{x[0]}"
         x.pop(0)
@@ -165,10 +138,11 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
     df.to_csv(os.path.join(outdir, "kallisto_counts.csv").replace("\\", "/"), sep=',', index=False)
     
     #shortbred extraction
+
+    #order the files numerically and
     #get the number of files and number of shortbred entries
     num_order = nsort(shortbred, False)
     max = int(list(uid_tracker)[-1])+1
-    # sample_total = len(num_order)
 
     #created double nested dictionary to house shortbred data per [read pair][gene]
     outer = {}
@@ -214,9 +188,9 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 #create observation matrix
 def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
-    print(first_col)
     df["ARG_ID"] = first_col
     outer = {}
+
     #extract user provided sample metadata
     treatments_dict = {}
     header = True
@@ -240,16 +214,16 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
     head.append("AMRGF_MULTIPLE")
     head.append("read_pair_number")
 
-    #create an empty list for each column header that requisite info
-    #will be appended to
+    #create an empty list for each column header that requisite info will be appended to
     for x in head:
         outer[x] = []
 
-    #dictionary the rgi information
+    #access the ARG tracker and store the info
     for x in uid_tracker:
         arg_info = uid_tracker[x][1]
 
         #add on the user supplied treatment information to arg rows
+        #by accessing the sample that the ARG is from
         for q in treatments_dict[uid_tracker[x][0]]:
             arg_info.append(q)
         
@@ -271,12 +245,71 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
             outer[head[y]].append(str(arg_info[y]).replace("\t", "").replace("\n", "").strip())
         
     #extract assigned, in order dictionary values
+    #and append the headers and values to the dataframe
     for x in outer:
-        # if x == "ARG_ID":
-            # print(outer[x])
         df[x.strip("\n")] = outer[x]
 
+    #create the observations matrix
     df.to_csv(os.path.join(outdir, "observations.csv").replace("\\", "/"), sep=',', index=False)
 
-#create ways to attach genomad and integron finder data
-# def genomad(plasmid, virus, outdir):
+#append genomad data to observations matrix
+def genomad(plasmid, virus, outdir):
+    plasmid_set = set()
+    virus_set = set()
+
+    #iterate over plasmid files and get contig names
+    for filename in os.listdir(plasmid):
+        f = os.path.join(plasmid, filename)
+        rpnum = filename.split("_")[2].split(".")[0]
+        with open (f, 'r') as file:
+            for line in file:
+                z = line.split("\t")
+                plasmid_set.add((z[0], rpnum))
+                
+
+    #iterate over virus files and get contig names
+    for filename in os.listdir(virus):
+        f = os.path.join(virus, filename)
+        rpnum = filename.split("_")[2].split(".")[0]
+        with open (f, 'r') as file:
+            for line in file:
+                z = line.split("\t")
+                virus_set.add((z[0], rpnum))
+
+    #go through observations file and match 
+    #ARG contig name with virus or plasmid contig name
+    plasmid_col = []
+    virus_col = []
+    header = True
+    with open (f"{outdir}/observations.csv", 'r') as file:
+        for line in file:
+            z = line.split(",")
+            if header != True:
+                q = z[2].split("_")
+                del q[-1]
+                name = "_".join(q)
+                combo = (name, z[-1].replace("\n", ""))
+                #check if contig name, rpnum combo exist in either plasmid or virus sets
+                if combo in plasmid_set:
+                    plasmid_col.append("YES")
+                else:
+                    plasmid_col.append("NO")
+                if combo in virus_set:
+                    virus_col.append("YES")
+                else:
+                    virus_col.append("NO")
+                
+            header = False
+
+    #add new columns to observations.csv and re-write it
+    df = pd.read_csv(f"{outdir}/observations.csv")
+    df['PLASMID_MGE'] = plasmid_col
+    df['VIRUS_MGE'] = virus_col
+    df.to_csv(f"{outdir}/observations.csv", index=False)
+
+#append integron_finder data to observations matrix
+def integron(files, outdir):
+    return None
+
+def spraynpray():
+    return None

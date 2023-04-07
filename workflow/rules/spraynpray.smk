@@ -1,7 +1,8 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
-SNP_PATH = config["snp"]
+SNP_PATH = config["snp_path"]
+SNP_DB = config["snp_db"]
 
 rule spraynpray:
     input:
@@ -14,5 +15,5 @@ rule spraynpray:
         conda activate {SNP_PATH}
         spray-and-pray.py -g {assembly.input} \
         -out {OUTPUT}/spraynpray/read_pair_{wildcards.sample} \
-        -ref /mmfs1/home/4565alin/build/spraynpraydb/nr.faa
+        -ref {SNP_DB}
         '''
