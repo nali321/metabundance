@@ -1,12 +1,12 @@
 # metabundance
 
-Metabundance is a pipeline designed to investigate metagenomic paired FASTQ reads at the assembly level and find abundance of antibiotic-resistance genes (ARGs) from within and between samples. It handles trimming the reads as well as creating and annotating the assemblies.
+Metabundance is a pipeline designed to investigate metagenomic paired FASTQ reads at the assembly level and find abundance of antibiotic-resistance genes (ARGs) from within and between samples. It handles trimming the reads as well as creating and annotating the assemblies. The main feature of Metabundance is the ability for it to link each ARG it finds to various classes of mobile genetic elements (MGEs), as well as taxonomy.
 
-Metabundance output is supposed to be used primarily with Phyloseq in R. It gives you two matrices of abundance data, as well as an observation matrix, that are to be used as the inputs to create [Phyloseq](https://joey711.github.io/phyloseq/) objects. 
+Metabundance output is supposed to be used primarily with [Phyloseq](https://joey711.github.io/phyloseq/) in R. It gives you two matrices of abundance data, as well as an observation matrix, that are to be used as the inputs to create Phyloseq objects. 
 
 Metabundance also functions as a way to link together ARG contigs with mobile genetic elements (MGEs), as well as finding the taxonomy of each contig that an ARG is on.
 
-Metabundance uses many depenencies in its pipeline, therefore a script (conda_installer.py) is used to download every single dependency and save it within a separate file containing conda environments (much like how Snakemake can create temporary conda environments).
+
 
 ## Prerequisites:
 - Must be ran on Linux
