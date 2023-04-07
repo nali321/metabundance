@@ -18,7 +18,7 @@ git clone https://github.com/nali321/metabundance
 ```
 
 ## Setup:
-Run conda_installer.py to create environments for pipeline
+Run conda_installer.py to create environments for pipeline.
 
 ```
 python /path/to/conda_installer.py -o /path/to/envs
@@ -29,5 +29,5 @@ This pipeline was originally designed on an HPC-server without internet access o
 ## Usage Guide:
 ### Quick Start
 ```
-python /path/to/metabundance.py
+python /path/to/metabundance.py -r /path/to/paired_reads -e /path/to/envs -i /path/to/illuminaclip -m /path/to/metadata.csv -o /path/to/outdir
 ```
