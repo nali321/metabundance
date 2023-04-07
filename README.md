@@ -9,7 +9,7 @@ Metabundance's output gives you two matrices of abundance data, as well as an ob
 - Must have Miniconda installed
 - Must have Mamba installed
 - Read pairs need to be labelled properly:
-  - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fq.gz
+  - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fastq.gz
 - If you want taxonomy data, you need to download [SprayNPray](https://github.com/Arkadiy-Garber/SprayNPray) as a conda environment
 
 ## Usage Guide:
