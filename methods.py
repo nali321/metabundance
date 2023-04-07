@@ -214,6 +214,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 #create observation matrix
 def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
+    print(first_col)
     df["ID"] = first_col
     outer = {}
     #extract user provided sample metadata
