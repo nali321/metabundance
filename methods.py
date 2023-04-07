@@ -216,7 +216,7 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
     df["ID"] = first_col
     outer = {}
-
+    print(first_col)
     #extract user provided sample metadata
     treatments_dict = {}
     header = True
