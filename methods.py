@@ -260,7 +260,7 @@ def genomad(plasmid, virus, outdir):
     #iterate over plasmid files and get contig names
     for filename in os.listdir(plasmid):
         f = os.path.join(plasmid, filename)
-        rpnum = filename.split("_")[2].split(".")[0]
+        rpnum = filename.split("_")[0]
         with open (f, 'r') as file:
             for line in file:
                 z = line.split("\t")
@@ -270,7 +270,7 @@ def genomad(plasmid, virus, outdir):
     #iterate over virus files and get contig names
     for filename in os.listdir(virus):
         f = os.path.join(virus, filename)
-        rpnum = filename.split("_")[2].split(".")[0]
+        rpnum = filename.split("_")[0]
         with open (f, 'r') as file:
             for line in file:
                 z = line.split("\t")
