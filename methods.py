@@ -154,7 +154,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
     del first_col[-1]
 
     #place rows in df to create columns for counts file
-    df["ID"] = first_col
+    df["ARG_ID"] = first_col
 
     for x in fin:
         header = f"read_pair_{x[0]}"
@@ -189,7 +189,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
                         outer[str(vars[1])][str(vars[0])] = z[1]
 
     #create id label column
-    df2["ID"] = first_col
+    df2["ARG_ID"] = first_col
 
     #extract assigned, in order dictionary values
     fin = []
@@ -215,7 +215,7 @@ def counts(uid_tracker, kallisto, shortbred, outdir):
 def observations(uid_tracker, head, first_col, treatments, outdir):
     df = pd.DataFrame()
     print(first_col)
-    df["ID"] = first_col
+    df["ARG_ID"] = first_col
     outer = {}
     #extract user provided sample metadata
     treatments_dict = {}
@@ -272,7 +272,7 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
         
     #extract assigned, in order dictionary values
     for x in outer:
-        # if x == "ID":
+        # if x == "ARG_ID":
             # print(outer[x])
         df[x.strip("\n")] = outer[x]
 
