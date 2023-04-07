@@ -19,14 +19,13 @@ git clone https://github.com/nali321/metabundance
 
 ## Usage Guide:
 ### Setup
-1. Run conda_installer.py to create environments for pipeline
+Run conda_installer.py to create environments for pipeline
 
 ```
 python /path/to/conda_installer.py -o /path/to/envs
 ```
 
-2. Run reads2args.py to create metagenomic assemblies and annotate them
-
-3. Run args2abundance.py to find ARG abundance and create matrices needed for Phyloseq
+This pipeline was originally designed on an HPC-server without internet access on clusters, therefore pre-installing the conda environments/dependencies before running the Snakemake pipeline was implemented.
 
 ### Running the pipeline
+
