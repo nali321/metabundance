@@ -22,11 +22,11 @@ git clone https://github.com/nali321/metabundance
 1. Run conda_installer.py to create environments for pipeline
 
 ```
-python /path/to/conda_installer.py stuff
+python /path/to/conda_installer.py -o /path/to/envs
 ```
 
 2. Run reads2args.py to create metagenomic assemblies and annotate them
 
 3. Run args2abundance.py to find ARG abundance and create matrices needed for Phyloseq
 
-###Running the pipeline
+### Running the pipeline
