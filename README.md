@@ -12,6 +12,11 @@ Metabundance's output gives you two matrices of abundance data, as well as an ob
   - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fastq.gz
 - If you want taxonomy data, you need to download [SprayNPray](https://github.com/Arkadiy-Garber/SprayNPray) as a conda environment
 
+## Installation:
+```
+git clone https://github.com/nali321/metabundance
+```
+
 ## Usage Guide:
 ### Setup
 1. Run conda_installer.py to create environments for pipeline
