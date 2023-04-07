@@ -135,6 +135,7 @@ os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
 
 #gather kallisto and shortbred counts
 first_col = methods.counts(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
+print(first_col)
 
 #create observation table
 methods.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
