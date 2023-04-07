@@ -4,10 +4,6 @@ Metabundance is a pipeline designed to investigate metagenomic paired FASTQ read
 
 Metabundance output is supposed to be used primarily with [Phyloseq](https://joey711.github.io/phyloseq/) in R. It gives you two matrices of abundance data, as well as an observation matrix, that are to be used as the inputs to create Phyloseq objects. 
 
-Metabundance also functions as a way to link together ARG contigs with mobile genetic elements (MGEs), as well as finding the taxonomy of each contig that an ARG is on.
-
-
-
 ## Prerequisites:
 - Must be ran on Linux
 - Must have Miniconda installed
