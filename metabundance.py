@@ -143,7 +143,7 @@ else:
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
-    "protein": faa_path, "snp": "N/A", "snp_db": "N/A",
+    "protein": faa_path, "snp_path": "N/A", "snp_db": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
