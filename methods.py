@@ -266,7 +266,6 @@ def genomad(plasmid, virus, outdir):
                 z = line.split("\t")
                 plasmid_set.add((z[0], rpnum))
                 
-
     #iterate over virus files and get contig names
     for filename in os.listdir(virus):
         f = os.path.join(virus, filename)
@@ -322,16 +321,23 @@ def integron(files, outdir):
     integron_dict = {}
 
     #get integron contigs and counts
+    #if there are no integrons found, then there is a "#" as the first character on the 2nd line
     for filename in os.listdir(files):
+        header = True
         f = os.path.join(files, filename)
         rpnum = filename.split("_")[0]
         with open (f, 'r') as file:
             for line in file:
+                #if any #'s are in the line it is not tab separated
                 z = line.split("\t")
-                if (z[1], rpnum) not in integron_dict:
-                    integron_dict[(z[1], rpnum)] = 1
-                else:
-                    integron_dict[(z[1], rpnum)] += 1
+                if len(z) > 1:
+                    if header == True:
+                        header = False
+                    else:
+                        if (z[1], rpnum) not in integron_dict:
+                            integron_dict[(z[1], rpnum)] = 1
+                        else:
+                            integron_dict[(z[1], rpnum)] += 1
     
     integron_presence = []
     integron_count = []
