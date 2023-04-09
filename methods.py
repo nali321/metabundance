@@ -281,14 +281,24 @@ def genomad(plasmid, virus, outdir):
     plasmid_col = []
     virus_col = []
     header = True
+    rp_index = 0
     with open (f"{outdir}/observations.csv", 'r') as file:
         for line in file:
             z = line.split(",")
-            if header != True:
+
+            #find the index of the "read_pair_number" column
+            if header == True:
+                for i in range(len(z)):
+                    if z[i] == "read_pair_number":
+                        rp_index = i
+
+            #find matching contig names
+            elif header != True:
                 q = z[2].split("_")
                 del q[-1]
                 name = "_".join(q)
-                combo = (name, z[-1].replace("\n", ""))
+                combo = (name, z[rp_index].replace("\n", ""))
+
                 #check if contig name, rpnum combo exist in either plasmid or virus sets
                 if combo in plasmid_set:
                     plasmid_col.append("YES")
@@ -309,7 +319,154 @@ def genomad(plasmid, virus, outdir):
 
 #append integron_finder data to observations matrix
 def integron(files, outdir):
-    return None
+    integron_dict = {}
 
-def spraynpray():
-    return None
+    #get integron contigs and counts
+    for filename in os.listdir(files):
+        f = os.path.join(files, filename)
+        rpnum = filename.split("_")[0]
+        with open (f, 'r') as file:
+            for line in file:
+                z = line.split("\t")
+                if (z[1], rpnum) not in integron_dict:
+                    integron_dict[(z[1], rpnum)] = 1
+                else:
+                    integron_dict[(z[1], rpnum)] += 1
+    
+    integron_presence = []
+    integron_count = []
+    header = True
+    rp_index = 0
+    with open (f"{outdir}/observations.csv", 'r') as file:
+        for line in file:
+            z = line.split(",")
+
+            #find the index of the "read_pair_number" column
+            if header == True:
+                for i in range(len(z)):
+                    if z[i] == "read_pair_number":
+                        rp_index = i
+
+            #find matching contig names
+            elif header != True:
+                q = z[2].split("_")
+                del q[-1]
+                name = "_".join(q)
+                combo = (name, z[rp_index].replace("\n", ""))
+
+                #check if contig name, rpnum combo exist for integron presence
+                if combo in integron_dict:
+                    integron_presence.append("YES")
+                    integron_count.append(integron_dict[combo])
+                else:
+                    integron_presence.append("NO")
+                    integron_count.append(0)
+        
+            header = False
+
+    #add new columns to observations.csv and re-write it
+    df = pd.read_csv(f"{outdir}/observations.csv")
+    df['INTEGRON'] = integron_presence
+    df['INTEGRON_COUNT'] = integron_count
+    df.to_csv(f"{outdir}/observations.csv", index=False)
+
+#append spraynpray taxa and coverage to observations matrix
+def spraynpray(files, outdir):
+    #get all the otu
+    arg_set = set()
+    arg_contig_names = []
+
+    add_otu = {"taxa": [], "taxa_coverage": []}
+
+    header = True
+    rp_index = 0
+    #open up otu file and obtain contig names
+    with open (f"{outdir}/observations.csv", 'r') as file:
+        for line in file:
+            z = line.split(",")
+
+            #find the index of the "read_pair_number" column
+            if header == True:
+                for i in range(len(z)):
+                    if z[i] == "read_pair_number":
+                        rp_index = i
+            elif header != True:
+                #remove last underscore and number
+                q = z[2].split("_")
+                del q[-1]
+                name = "_".join(q)
+                combo = (str(name), str(z[rp_index].replace("\n", "")))
+                arg_set.add(combo)
+                arg_contig_names.append(combo)
+                rpnum = str(z[rp_index].replace("\n", ""))
+
+            header = False
+
+    total_cov_dict = {}
+    taxa_total_cov_dict = {}
+    contig_num = 1
+    snp_set = set()
+    search = {}
+    #loop over filenames in folder
+    for filename in nsort(files):
+        total_cov = 0
+        header = True
+        rpnum = filename.split("_")[0]
+        taxa_total_cov_dict[rpnum] = {}
+        search[rpnum] = {}
+
+        #loop over the files
+        with open (os.path.join(files, filename).replace("\\", "/"), 'r') as file:
+            for line in file:
+                z = line.split(",")
+                z[6] = z[6].strip()
+
+                #make sure header and NA entries aren't grabbed
+                if header != True and z[5] != "NA":
+                    contig_name = z[0]
+                    cov = float(z[0].split("_")[-1])
+                    total_cov += cov    
+                    entry = str(z[6].split(";")[0])
+                    
+                    #find the name with the highest similarity
+                    if len(entry) != 0:
+                        for x in entry.split(" "):
+                            if len(x) > 0:
+                                if x[0].isupper():
+                                    taxa = x
+                                    break
+                    
+                    #add taxa to dictionary
+                    if taxa not in taxa_total_cov_dict[rpnum]:
+                        taxa_total_cov_dict[rpnum][taxa] = cov
+                    else:
+                        taxa_total_cov_dict[rpnum][taxa] += cov
+
+                    #add stuff for otu column
+                    combo = (str(contig_name), str(rpnum))
+                    snp_set.add(combo)
+                    search[rpnum][contig_name] = (taxa, cov)
+
+                header = False
+                contig_num+=1
+            
+            #match rpnum to total coverage
+            total_cov_dict[rpnum] = total_cov
+    
+    #iterate over collected ARG contig names and find matches to snp contigs
+    for x in arg_contig_names:
+        contig_name = x[0]
+        rpnum = x[1]
+        #if you find correct rpnum+contig name, get info
+        if contig_name in search[rpnum]:
+            info = search[rpnum][contig_name]
+            add_otu["taxa"].append(info[0])
+            add_otu["taxa_coverage"].append(info[1])
+        else:
+            add_otu["taxa"].append("NF")
+            add_otu["taxa_coverage"].append("NA")
+    
+    df = pd.read_csv(f"{outdir}/observations.csv")
+    df['TAXA'] = add_otu["taxa"]
+    df['TAXA_COVERAGE'] = add_otu["taxa_coverage"]
+    df.to_csv(f"{outdir}/observations.csv", index=False)
