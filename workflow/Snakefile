@@ -26,6 +26,7 @@ RULE_ALL_DICT = {
     "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
 }
 
+#select the rule depending on what config file variable is set as
 RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
 
 rule all:
