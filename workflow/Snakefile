@@ -1,14 +1,34 @@
-#set any external variables
-configfile: "config.yaml"
+from snakemake.io import glob_wildcards
 
 include: "rules/trim_reads.smk"
 include: "rules/metaspades.smk"
 include: "rules/rgi.smk"
+include: "rules/genomad.smk"
+include: "rules/integron_finder.smk"
+include: "rules/spraynpray.smk"
 include: "rules/kallisto_index.smk"
 include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
 
-# rule all:
-#     input:
-#         expand("{output_rule}", output_rule=[config["target_output"][rule_name] for rule_name in config["target_rules"]])
+DIR = config["reads"]
+OUTPUT = config["output"]
+
+#use R1 files to extract sample numbers
+SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
+
+#pre-determined entries for rule all depending on which snakemake call it is
+RULE_ALL_DICT = {
+    "annotations": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
+    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
+    "taxonomy": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
+    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", f"{OUTPUT}/spraynpray/read_pair_{{sample}}/read_pair_{{sample}}.csv"],
+    "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
+}
+
+#select the rule depending on what config file variable is set as
+RULE_ALL = RULE_ALL_DICT[config["rule_all"]]
+
+rule all:
+    input:
+        expand(RULE_ALL, sample=SAMPLES)

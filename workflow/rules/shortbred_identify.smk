@@ -1,22 +1,22 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
-ID = config["id"]
 MUSCLE = config["muscle"]
 USEARCH = config["usearch"]
+PROTEIN = config["protein"]
 
 rule shortbred_identify:
     input:
-        proteins=config["faa_file"],
+        proteins=f"{PROTEIN}/{{sample}}.faa",
         ref_markers=config["CARD_markers"],
     output:
-        markers=f"{OUTPUT}/shortbred/shortbred_identify/read_pair_{ID}/markers.faa"
+        markers=f"{OUTPUT}/shortbred_identify/read_pair_{{sample}}/markers.faa"
     shell:
         '''
         source {CONDA_PATH}
         conda activate {ENVS}/shortbred
         shortbred_identify.py --goi {input.proteins} \
-        --ref {input.ref_markers} --tmp {OUTPUT}/shortbred/shortbred_identify/read_pair_{ID} \
+        --ref {input.ref_markers} --tmp {OUTPUT}/shortbred_identify/read_pair_{wildcards.sample} \
         --markers {output.markers} --usearch {USEARCH} \
         --muscle {MUSCLE} \
         --cdhit {ENVS}/cdhit/bin/cd-hit \

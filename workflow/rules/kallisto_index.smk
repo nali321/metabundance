@@ -1,10 +1,11 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
+FASTA = config["fasta"]
 
 rule kallisto_index:
     input:
-        args=config["all_args"]
+        args=FASTA
     output:
         idx=f"{OUTPUT}/kallisto/args.idx"
     shell:
