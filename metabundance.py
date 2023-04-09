@@ -27,7 +27,7 @@ parser.add_argument("-o", "--outdir", type=str,
 parser.add_argument("-sc", "--snakemake_cores", type=str,
                     help="Number of cores for Snakemake to use. Default is 6", default="6")
 
-parser.add_argument("-s", "--spraynpray", type=str,
+parser.add_argument("-s", "--spraynpray_path", type=str,
                     help="Include the filepath to the SprayNPray conda environment if you want taxonomic identification", default="N/A")
 
 parser.add_argument("-sd", "--spraynpray_db", type=str,
@@ -39,7 +39,7 @@ reads_path = args.reads
 envs_path = args.envs
 sc = args.snakemake_cores
 illuminaclip = args.illuminaclip
-snp_path = args.spraynpray
+snp_path = args.spraynpray_path
 snp_db = args.spraynpray_db
 metadata = args.metadata
 
@@ -90,7 +90,7 @@ sample_ids = [i for i in range(1, rp_total+1)]
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "snp_path": "N/A", "snp_db": "NA",
+    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "snp_path": snp_path, "snp_db": snp_db,
     "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
