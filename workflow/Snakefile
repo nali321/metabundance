@@ -10,7 +10,7 @@ include: "rules/kallisto_index.smk"
 include: "rules/kallisto.smk"
 include: "rules/shortbred_identify.smk"
 include: "rules/shortbred_quantify.smk"
-#test
+
 DIR = config["reads"]
 OUTPUT = config["output"]
 
