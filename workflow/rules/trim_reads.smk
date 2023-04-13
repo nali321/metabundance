@@ -19,9 +19,11 @@ rule trim_reads:
         reverse_unpaired=f"{OUTPUT}/trimmed/read_pair_{{sample}}/reverse_unpaired.fq.gz"
     shell:
         '''
+        set +eu
         source {CONDA_PATH}
         conda activate {ENVS}/trimmomatic
-        source {ENVS}/trimmomatic/etc/conda/activate.d/openjdk_activate.sh
+        export JAVA_HOME={ENVS}/trimmomatic/bin/java
         trimmomatic PE -phred33 {input.forward_reads} {input.reverse_reads} {output.forward_paired} {output.forward_unpaired} {output.reverse_paired} {output.reverse_unpaired} ILLUMINACLIP:{ILLUMINACLIP}:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:70
         conda deactivate
+        set -eu
         '''
