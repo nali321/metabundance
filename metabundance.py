@@ -112,8 +112,8 @@ uid_tracker, protein_tracker, head = methods.fasta(f"{outdir}/all_rgi")
 #create FASTA file
 fasta_path = f"{outdir}/fasta"
 try:
-    os.mkdir(outdir)
-#throw an error if the folder doesn't exist
+    os.mkdir(fasta_path)
+#throw an error if the folder already exists
 except OSError as error:
     print(error)
 #if the folder was just created, create the input files. this way you can re-run snakefile and have the
