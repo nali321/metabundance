@@ -130,7 +130,7 @@ else:
 #create .faa files
 faa_path = os.path.join(fasta_path, "protein_files")
 try:
-    os.mkdir(os.path.join(faa_path, "protein_files").replace("\\", "/"))
+    os.mkdir(faa_path)
 except OSError as error:
     print(error)
 else:
