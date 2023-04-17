@@ -135,7 +135,7 @@ except OSError as error:
     print(error)
 else:
     for x in protein_tracker:
-        with open (os.path.join(faa_path, f"protein_files/{x}.faa").replace("\\", "/"), 'w+') as f:
+        with open (os.path.join(faa_path, f"{x}.faa").replace("\\", "/"), 'w+') as f:
             for y in protein_tracker[x]:
                 f.write(f">{y[0]}|{x}\n{y[2]}\n")
 
