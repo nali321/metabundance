@@ -288,7 +288,7 @@ def genomad(plasmid, virus, outdir):
             #find the index of the "read_pair_number" column
             if header == True:
                 for i in range(len(z)):
-                    if z[i] == "read_pair_number":
+                    if z[i].strip('\n') == "read_pair_number":
                         rp_index = i
 
             #find matching contig names
@@ -350,7 +350,7 @@ def integron(files, outdir):
             #find the index of the "read_pair_number" column
             if header == True:
                 for i in range(len(z)):
-                    if z[i] == "read_pair_number":
+                    if z[i].strip('\n') == "read_pair_number":
                         rp_index = i
 
             #find matching contig names
@@ -378,7 +378,7 @@ def integron(files, outdir):
 
 #append spraynpray taxa and coverage to observations matrix
 def spraynpray(files, outdir):
-    #get all the otu
+    #get all the args
     arg_set = set()
     arg_contig_names = []
 
@@ -386,7 +386,7 @@ def spraynpray(files, outdir):
 
     header = True
     rp_index = 0
-    #open up otu file and obtain contig names
+    #open up observation file and obtain contig names
     with open (f"{outdir}/observations.csv", 'r') as file:
         for line in file:
             z = line.split(",")
@@ -394,7 +394,7 @@ def spraynpray(files, outdir):
             #find the index of the "read_pair_number" column
             if header == True:
                 for i in range(len(z)):
-                    if z[i] == "read_pair_number":
+                    if z[i].strip('\n') == "read_pair_number":
                         rp_index = i
             elif header != True:
                 #remove last underscore and number
@@ -414,10 +414,10 @@ def spraynpray(files, outdir):
     snp_set = set()
     search = {}
     #loop over filenames in folder
-    for filename in nsort(files):
+    for filename in os.listdir(files):
         total_cov = 0
         header = True
-        rpnum = filename.split("_")[0]
+        rpnum = filename.split("_")[2].split(".")[0]
         taxa_total_cov_dict[rpnum] = {}
         search[rpnum] = {}
 
