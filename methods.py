@@ -242,6 +242,8 @@ def observations(uid_tracker, head, first_col, treatments, outdir):
 
         #get index of arg row info to match the corresponding header name in head
         for y in range(len(arg_info)):
+            #remove any stray commas that will interfere with re-reading the observation matrix
+            arg_info[y] = arg_info[y].replace(",", "")
             outer[head[y]].append(str(arg_info[y]).replace("\t", "").replace("\n", "").strip())
         
     #extract assigned, in order dictionary values
