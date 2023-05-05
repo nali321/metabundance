@@ -6,8 +6,8 @@ Metabundance's output gives you two matrices of abundance data, as well as an ob
 
 ## Prerequisites:
 - Must be ran on Linux
-- Must have [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed and conda set up
-- Must have [Mamba](https://mamba.readthedocs.io/en/latest/installation.html) installed
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed and conda set up
+- [Mamba](https://mamba.readthedocs.io/en/latest/installation.html) installed
 - Read pairs need to be labelled properly:
   - numbered 1 - sample total following this format: [sample number]_[R1/R2]_001.fastq.gz
 - If you want taxonomy data, you need to download [SprayNPray](https://github.com/Arkadiy-Garber/SprayNPray) as a conda environment
