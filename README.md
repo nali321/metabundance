@@ -22,6 +22,7 @@ Run conda_installer.py to create environments for pipeline.
 
 ```
 python /path/to/conda_installer.py -o /path/to/envs
+conda activate /path/to/envs/metabundance
 ```
 
 This pipeline was originally designed on an HPC-server without internet access on clusters, therefore pre-installing the conda environments/dependencies before running the Snakemake pipeline was implemented. This achieves the same result as if the conda module was used on Snakemake, where the conda environments are specifically downloaded to a separate folder instead of your main envs folder.
@@ -29,6 +30,5 @@ This pipeline was originally designed on an HPC-server without internet access o
 ## Usage Guide:
 ### Quick Start
 ```
-conda activate /path/to/envs/metabundance
 python /path/to/metabundance.py -r /path/to/paired_reads -e /path/to/envs -i /path/to/illuminaclip -m /path/to/metadata.csv -o /path/to/outdir
 ```
