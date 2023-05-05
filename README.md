@@ -29,5 +29,6 @@ This pipeline was originally designed on an HPC-server without internet access o
 ## Usage Guide:
 ### Quick Start
 ```
+conda activate /path/to/envs/metabundance
 python /path/to/metabundance.py -r /path/to/paired_reads -e /path/to/envs -i /path/to/illuminaclip -m /path/to/metadata.csv -o /path/to/outdir
 ```
