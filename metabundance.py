@@ -1,6 +1,6 @@
 import os
 import argparse
-import methods
+import functions
 
 parser = argparse.ArgumentParser()
 
@@ -76,10 +76,10 @@ with open (conda_path_file, 'r') as file:
         break
 
 #prepare reads for snakemake use
-rp_order = methods.nsort(reads_path, True)
+rp_order = functions.nsort(reads_path, True)
 
 #check if folder is good
-methods.check_reads(len(rp_order))
+functions.check_reads(len(rp_order))
 
 #get total number of read pairs
 rp_total = int(len(rp_order)/2)
@@ -94,7 +94,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
-config_path = methods.config(d, "config1", outdir)
+config_path = functions.config(d, "config1", outdir)
 
 #call annotations snakefile
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path}")
@@ -107,7 +107,7 @@ os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
 #this being re-ran, then it'll re-run the kallisto and shortbred rules because the input files
 #were updated since the previous run
 # uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
-uid_tracker, protein_tracker, head = methods.fasta(f"{outdir}/all_rgi")
+uid_tracker, protein_tracker, head = functions.fasta(f"{outdir}/all_rgi")
 
 #create FASTA file
 fasta_path = f"{outdir}/fasta"
@@ -148,7 +148,7 @@ d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
 #create 2nd config file
-config_path2 = methods.config(d, "config2", outdir)
+config_path2 = functions.config(d, "config2", outdir)
 
 #second call of snakemake
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
@@ -157,19 +157,19 @@ os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/
 os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
 
 #gather kallisto and shortbred counts
-first_col = methods.count_matrices(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
+first_col = functions.count_matrices(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
 
 #create observation table
-methods.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
+functions.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
 
 #attach genomad, integron, and spraynpray (if needed) data
 #after the observations matrix has been made
-methods.genomad(f"{outdir}/all_plasmid", f"{outdir}/all_virus", f"{outdir}/matrices")
+functions.genomad(f"{outdir}/all_plasmid", f"{outdir}/all_virus", f"{outdir}/matrices")
 
 #attach integron
-methods.integron(f"{outdir}/all_integron", f"{outdir}/matrices")
+functions.integron(f"{outdir}/all_integron", f"{outdir}/matrices")
 
 #gather snp files and append data to observation matrix if necessary
 if rule_type == "taxonomy":
     os.system(f"bash {home_dir}/scripts/gather_snp.sh {rp_total} {outdir}")
-    methods.spraynpray(f"{outdir}/all_snp", f"{outdir}/matrices")
+    functions.spraynpray(f"{outdir}/all_snp", f"{outdir}/matrices")
