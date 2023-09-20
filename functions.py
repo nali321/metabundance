@@ -24,7 +24,7 @@ def config(d, name, outdir):
 #checks to make sure number of reads is even and above 0
 def check_reads(size):
     if size == 0 or size % 2 != 0:
-        raise ValueError("There must be an even number of reads greater than 0 in the folder.")
+        raise ValueError("There must be an even number of reads greater than 0 in the folder. Ensure the only files in your reads folder are the read pairs.")
 
 #takes all of the annotation output files and creates a dictionary of
 #labelled ARGs used to create the main FASTA file and individual .faa filesj
