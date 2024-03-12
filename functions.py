@@ -51,6 +51,7 @@ def fasta(all_rgi):
                 #ignore header line
                 if header != True:
                     #do not add anything with repeat sequences
+                    #17 = predicted DNA, 18 = predicted protein, 19 = CARD protein
                     if entry[17] not in repeat_seqs or entry[18] not in repeat_seqs or entry[19] not in repeat_seqs:
                         repeat_seqs.update((entry[17], entry[18], entry[19]))
 
