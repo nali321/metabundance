@@ -27,10 +27,10 @@ parser.add_argument("-o", "--outdir", type=str,
 parser.add_argument("-sc", "--snakemake_cores", type=str,
                     help="Number of cores for Snakemake to use. Default is 6", default="6")
 
-parser.add_argument("-s", "--spraynpray_path", type=str,
+parser.add_argument("-s", "--cat_path", type=str,
                     help="Include the filepath to the SprayNPray conda environment if you want taxonomic identification", default="N/A")
 
-parser.add_argument("-sd", "--spraynpray_db", type=str,
+parser.add_argument("-sd", "--cat_db", type=str,
                     help="Include the filepath to the SprayNPray database if you want taxonomic identification", default="N/A")
 
 args = parser.parse_args()
@@ -39,20 +39,20 @@ reads_path = args.reads
 envs_path = args.envs
 sc = args.snakemake_cores
 illuminaclip = args.illuminaclip
-snp_path = args.spraynpray_path
-snp_db = args.spraynpray_db
+cat_path = args.cat_path
+cat_db = args.cat_db
 metadata = args.metadata
 
 #check if taxonomy needs to be ran
 #throw errors if only one of the paths is provided
-if snp_path and snp_db == "N/A":
+if cat_path and cat_db == "N/A":
     rule_type = "annotations"
-elif snp_path and snp_db != "N/A":
+elif cat_path and cat_db != "N/A":
     rule_type = "taxonomy"
-elif snp_path == "N/A" and snp_db != "N/A":
-    raise Exception('Both filepaths to snp_path and snp_db need to be provided')
-elif snp_path != "N/A" and snp_db == "N/A":
-    raise Exception('Both filepaths to snp_path and snp_db need to be provided')
+elif cat_path == "N/A" and cat_db != "N/A":
+    raise Exception('Both filepaths to cat_path and cat_db need to be provided')
+elif cat_path != "N/A" and cat_db == "N/A":
+    raise Exception('Both filepaths to cat_path and cat_db need to be provided')
 
 #create output directory
 outdir = args.outdir
@@ -90,7 +90,7 @@ sample_ids = [i for i in range(1, rp_total+1)]
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "snp_path": snp_path, "snp_db": snp_db,
+    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db,
     "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
