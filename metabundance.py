@@ -99,77 +99,79 @@ config_path = functions.config(d, "config1", outdir)
 #call annotations snakefile
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path}")
 
-#collect all rgi, genomad, integron output files
-os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
+###ABOVE CALL ENDING EARLY
 
-#create the FASTA and .faa files
-#if you're re-running the snakefile and the annotations.FASTA or .faa files get re-made due to
-#this being re-ran, then it'll re-run the kallisto and shortbred rules because the input files
-#were updated since the previous run
-# uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
-uid_tracker, protein_tracker, head = functions.fasta(f"{outdir}/all_rgi")
+# #collect all rgi, genomad, integron output files
+# os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
 
-#create FASTA file
-fasta_path = f"{outdir}/fasta"
-try:
-    os.mkdir(fasta_path)
-#throw an error if the folder already exists
-except OSError as error:
-    print(error)
-#if the folder was just created, create the input files. this way you can re-run snakefile and have the
-#kallisto and shortbred steps not be re-ran
-else:
-    with open (os.path.join(fasta_path, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
-        for x in uid_tracker:
-            f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
-            if uid_tracker[x][0] not in protein_tracker:
-                protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
-            else:
-                protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
+# #create the FASTA and .faa files
+# #if you're re-running the snakefile and the annotations.FASTA or .faa files get re-made due to
+# #this being re-ran, then it'll re-run the kallisto and shortbred rules because the input files
+# #were updated since the previous run
+# # uid_tracker, protein_tracker, fasta_path, faa_path, head = methods.fasta(f"{outdir}/all_rgi", f"{outdir}/fasta")
+# uid_tracker, protein_tracker, head = functions.fasta(f"{outdir}/all_rgi")
 
-#create .faa files
-faa_path = os.path.join(fasta_path, "protein_files")
-try:
-    os.mkdir(faa_path)
-except OSError as error:
-    print(error)
-else:
-    for x in protein_tracker:
-        with open (os.path.join(faa_path, f"{x}.faa").replace("\\", "/"), 'w+') as f:
-            for y in protein_tracker[x]:
-                f.write(f">{y[0]}|{x}\n{y[2]}\n")
+# #create FASTA file
+# fasta_path = f"{outdir}/fasta"
+# try:
+#     os.mkdir(fasta_path)
+# #throw an error if the folder already exists
+# except OSError as error:
+#     print(error)
+# #if the folder was just created, create the input files. this way you can re-run snakefile and have the
+# #kallisto and shortbred steps not be re-ran
+# else:
+#     with open (os.path.join(fasta_path, "annotations.FASTA").replace("\\", "/"), 'w+') as f:
+#         for x in uid_tracker:
+#             f.write(f">{x}|{uid_tracker[x][0]}\n{uid_tracker[x][1][17]}\n")
+#             if uid_tracker[x][0] not in protein_tracker:
+#                 protein_tracker[uid_tracker[x][0]] = [[x, uid_tracker[x][1], uid_tracker[x][2]]]
+#             else:
+#                 protein_tracker[uid_tracker[x][0]].append([x, uid_tracker[x][1], uid_tracker[x][2]])
 
-#create config file for abundance run
-d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
-    "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
-    "protein": faa_path, "snp_path": "N/A", "snp_db": "N/A",
-    "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
-    "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
+# #create .faa files
+# faa_path = os.path.join(fasta_path, "protein_files")
+# try:
+#     os.mkdir(faa_path)
+# except OSError as error:
+#     print(error)
+# else:
+#     for x in protein_tracker:
+#         with open (os.path.join(faa_path, f"{x}.faa").replace("\\", "/"), 'w+') as f:
+#             for y in protein_tracker[x]:
+#                 f.write(f">{y[0]}|{x}\n{y[2]}\n")
 
-#create 2nd config file
-config_path2 = functions.config(d, "config2", outdir)
+# #create config file for abundance run
+# d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
+#     "conda_path": conda_profile, "envs_path": envs_path,
+#     "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
+#     "protein": faa_path, "snp_path": "N/A", "snp_db": "N/A",
+#     "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
+#     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
-#second call of snakemake
-os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
+# #create 2nd config file
+# config_path2 = functions.config(d, "config2", outdir)
 
-#gather all kallisto and shortbred output files
-os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
+# #second call of snakemake
+# os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path2}")
 
-#gather kallisto and shortbred counts
-first_col = functions.count_matrices(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
+# #gather all kallisto and shortbred output files
+# os.system(f"bash {home_dir}/scripts/gather_abundance.sh {rp_total} {outdir}")
 
-#create observation table
-functions.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
+# #gather kallisto and shortbred counts
+# first_col = functions.count_matrices(uid_tracker, f"{outdir}/all_kallisto", f"{outdir}/all_shortbred", f"{outdir}/matrices")
 
-#attach genomad, integron, and spraynpray (if needed) data
-#after the observations matrix has been made
-functions.genomad(f"{outdir}/all_plasmid", f"{outdir}/all_virus", f"{outdir}/matrices")
+# #create observation table
+# functions.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
 
-#attach integron
-functions.integron(f"{outdir}/all_integron", f"{outdir}/matrices")
+# #attach genomad, integron, and spraynpray (if needed) data
+# #after the observations matrix has been made
+# functions.genomad(f"{outdir}/all_plasmid", f"{outdir}/all_virus", f"{outdir}/matrices")
 
-#gather snp files and append data to observation matrix if necessary
-if rule_type == "taxonomy":
-    os.system(f"bash {home_dir}/scripts/gather_snp.sh {rp_total} {outdir}")
-    functions.spraynpray(f"{outdir}/all_snp", f"{outdir}/matrices")
+# #attach integron
+# functions.integron(f"{outdir}/all_integron", f"{outdir}/matrices")
+
+# #gather snp files and append data to observation matrix if necessary
+# if rule_type == "taxonomy":
+#     os.system(f"bash {home_dir}/scripts/gather_snp.sh {rp_total} {outdir}")
+#     functions.spraynpray(f"{outdir}/all_snp", f"{outdir}/matrices")
