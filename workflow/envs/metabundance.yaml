@@ -1,4 +1,4 @@
-name: methods
+name: metabundance
 channels:
   - conda-forge
   - bioconda
