@@ -27,11 +27,16 @@ parser.add_argument("-o", "--outdir", type=str,
 parser.add_argument("-sc", "--snakemake_cores", type=str,
                     help="Number of cores for Snakemake to use. Default is 6", default="6")
 
-parser.add_argument("-s", "--cat_path", type=str,
-                    help="Include the filepath to the SprayNPray conda environment if you want taxonomic identification", default="N/A")
+#these three flags must be submitted together
+
+parser.add_argument("-sp", "--cat_path", type=str,
+                    help="Include the filepath to the CAT conda environment if you want taxonomic identification", default="N/A")
+
+parser.add_argument("-sp", "--cat_pack", type=str,
+                    help="Include the filepath to the CAT pack installation if you want taxonomic identification", default="N/A")
 
 parser.add_argument("-sd", "--cat_db", type=str,
-                    help="Include the filepath to the SprayNPray database if you want taxonomic identification", default="N/A")
+                    help="Include the filepath to the CAT database folder if you want taxonomic identification (not the db itself but the folder that the db is in)", default="N/A")
 
 args = parser.parse_args()
 
@@ -41,18 +46,23 @@ sc = args.snakemake_cores
 illuminaclip = args.illuminaclip
 cat_path = args.cat_path
 cat_db = args.cat_db
+cat_pack = args.cat_pack
 metadata = args.metadata
 
 #check if taxonomy needs to be ran
-#throw errors if only one of the paths is provided
-if cat_path and cat_db == "N/A":
+if cat_path and cat_pack and cat_db == "N/A":
     rule_type = "annotations"
-elif cat_path and cat_db != "N/A":
+elif cat_path and cat_pack and cat_db != "N/A":
     rule_type = "taxonomy"
-elif cat_path == "N/A" and cat_db != "N/A":
-    raise Exception('Both filepaths to cat_path and cat_db need to be provided')
-elif cat_path != "N/A" and cat_db == "N/A":
-    raise Exception('Both filepaths to cat_path and cat_db need to be provided')
+#throw errors if only one or two of the paths is provided
+na_count = sum(var == "N/A" for var in [cat_path, cat_pack, cat_db])
+if na_count != 0 and na_count < 3:
+    raise Exception('All three filepaths to cat_path, cat_pack, and cat_db need to be provided')
+
+# elif cat_path == "N/A" and cat_db != "N/A":
+#     raise Exception('Both filepaths to cat_path and cat_db need to be provided')
+# elif cat_path != "N/A" and cat_db == "N/A":
+#     raise Exception('Both filepaths to cat_path and cat_db need to be provided')
 
 #create output directory
 outdir = args.outdir
@@ -87,9 +97,17 @@ rp_total = int(len(rp_order)/2)
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
 
+#check if the CAT conda environment is the same as the users conda environment
+parts = cat_path.split("miniconda3", 1)
+extracted_path = parts[0] + "miniconda3"
+if extracted_path != conda_profile:
+    cat_conda = f"{extracted_path}/etc/profile.d/conda.sh"
+else:
+    cat_conda = conda_profile
+
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids, "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db,
+    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db, "cat_conda": cat_conda,
     "ice_db": f"{dep}/tncentral_isfinder.fa", "tn_is_db": f"{dep}/ICE_seq_all.fas", "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
@@ -142,7 +160,7 @@ else:
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
-    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A", "ice_db": "N/A", "tn_is_db": "N/A",
+    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A", "cat_conda": "N/A", "ice_db": "N/A", "tn_is_db": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
