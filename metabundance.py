@@ -29,13 +29,13 @@ parser.add_argument("-sc", "--snakemake_cores", type=str,
 
 #these three flags must be submitted together
 
-parser.add_argument("-sp", "--cat_path", type=str,
+parser.add_argument("-cp", "--cat_path", type=str,
                     help="Include the filepath to the CAT conda environment if you want taxonomic identification", default="N/A")
 
-parser.add_argument("-sp", "--cat_pack", type=str,
+parser.add_argument("-cpk", "--cat_pack", type=str,
                     help="Include the filepath to the CAT pack installation if you want taxonomic identification", default="N/A")
 
-parser.add_argument("-sd", "--cat_db", type=str,
+parser.add_argument("-cd", "--cat_db", type=str,
                     help="Include the filepath to the CAT database folder if you want taxonomic identification (not the db itself but the folder that the db is in)", default="N/A")
 
 args = parser.parse_args()
