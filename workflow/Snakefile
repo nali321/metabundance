@@ -5,6 +5,8 @@ include: "rules/metaspades.smk"
 include: "rules/rgi.smk"
 include: "rules/genomad.smk"
 include: "rules/integron_finder.smk"
+include: "rules/ice.smk"
+include: "rules/tncentral_isfinder.smk"
 include: "rules/cat.smk"
 include: "rules/kallisto_index.smk"
 include: "rules/kallisto.smk"
@@ -20,9 +22,11 @@ SAMPLES, = glob_wildcards(f"{DIR}/{{sample}}_R1_001.fastq.gz")
 #pre-determined entries for rule all depending on which snakemake call it is
 RULE_ALL_DICT = {
     "annotations": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
-    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons"],
+    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", f"{OUTPUT}/ice/read_pair_{{sample}}/ice_{{sample}}.txt",
+    f"{OUTPUT}/tn_is/read_pair_{{sample}}/tn_is_{{sample}}.txt"],
     "taxonomy": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
-    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", f"{OUTPUT}/cat/read_pair_{{sample}}/CAT_{{sample}}.contig2classification.txt"],
+    f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", f"{OUTPUT}/ice/read_pair_{{sample}}/ice_{{sample}}.txt",
+    f"{OUTPUT}/tn_is/read_pair_{{sample}}/tn_is_{{sample}}.txt", f"{OUTPUT}/cat/read_pair_{{sample}}/CAT_{{sample}}.contig2classification.txt"],
     "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
 }
 

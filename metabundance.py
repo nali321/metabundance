@@ -88,10 +88,9 @@ rp_total = int(len(rp_order)/2)
 sample_ids = [i for i in range(1, rp_total+1)]
 
 #create config file for rgi run
-d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
-    "conda_path": conda_profile, "envs_path": envs_path,
+d = {"output": outdir, "reads": reads_path, "sample": sample_ids, "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db,
-    "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
+    "ice_db": f"{dep}/tncentral_isfinder.fa", "tn_is_db": f"{dep}/ICE_seq_all.fas", "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
 config_path = functions.config(d, "config1", outdir)
@@ -99,9 +98,7 @@ config_path = functions.config(d, "config1", outdir)
 #call annotations snakefile
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path}")
 
-###ABOVE CALL ENDING EARLY
-
-#collect all rgi, genomad, integron output files
+#collect all annotationj output files
 os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
 
 #create the FASTA and .faa files
@@ -145,7 +142,7 @@ else:
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
-    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A",
+    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A", "ice_db": "N/A", "tn_is_db": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 
@@ -164,14 +161,13 @@ first_col = functions.count_matrices(uid_tracker, f"{outdir}/all_kallisto", f"{o
 #create observation table
 functions.observations(uid_tracker, head, first_col, metadata, f"{outdir}/matrices")
 
-#attach genomad, integron, and spraynpray (if needed) data
-#after the observations matrix has been made
+#attach MGE and CAT (if needed) data after the observations matrix has been made
 functions.genomad(f"{outdir}/all_plasmid", f"{outdir}/all_virus", f"{outdir}/matrices")
-
-#attach integron
+functions.blast_mges(f"{outdir}/all_ice", f"{outdir}/matrices")
+functions.blast_mges(f"{outdir}/all_tn_is", f"{outdir}/matrices")
 functions.integron(f"{outdir}/all_integron", f"{outdir}/matrices")
 
 #gather snp files and append data to observation matrix if necessary
 if rule_type == "taxonomy":
-    os.system(f"bash {home_dir}/scripts/gather_snp.sh {rp_total} {outdir}")
-    functions.spraynpray(f"{outdir}/all_snp", f"{outdir}/matrices")
+    os.system(f"bash {home_dir}/scripts/gather_cat.sh {rp_total} {outdir}")
+    functions.cat(f"{outdir}/all_cat", f"{outdir}/matrices")
