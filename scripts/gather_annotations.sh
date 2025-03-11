@@ -4,7 +4,7 @@ mkdir $2/all_rgi
 mkdir $2/all_plasmid
 mkdir $2/all_virus
 mkdir $2/all_integron
-mdkir $2/all_ice
+mkdir $2/all_ice
 mkdir $2/all_tn_is
 
 for ((i=1; i<=$1; i++)); do

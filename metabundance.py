@@ -113,6 +113,8 @@ config_path = functions.config(d, "config1", outdir)
 #call annotations snakefile
 os.system(f"snakemake --cores {sc} --directory {outdir} --snakefile {snake_dir}/Snakefile all --configfile {config_path}")
 
+#pipeline ending early here
+
 #collect all annotationj output files
 os.system(f"bash {home_dir}/scripts/gather_annotations.sh {rp_total} {outdir}")
 
