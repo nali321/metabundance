@@ -13,7 +13,6 @@ rule cat:
         taxa=f"{OUTPUT}/cat/read_pair_{{sample}}/CAT.contigs2classification.txt"
     shell:
         '''
-        mkdir -p {OUTPUT}/cat/read_pair_{wildcards.sample}
         source {CAT_PROFILE}
         conda activate {CAT_PATH}
         {CAT_PACK} contigs \

@@ -26,7 +26,7 @@ RULE_ALL_DICT = {
     f"{OUTPUT}/tn_is/read_pair_{{sample}}/tn_is.txt"],
     "taxonomy": [f"{OUTPUT}/rgi/read_pair_{{sample}}/final.txt", f"{OUTPUT}/genomad/read_pair_{{sample}}/contigs_summary/contigs_plasmid_summary.tsv",
     f"{OUTPUT}/integron_finder/read_pair_{{sample}}/Results_Integron_Finder_contigs/contigs.integrons", f"{OUTPUT}/ice/read_pair_{{sample}}/ice.txt",
-    f"{OUTPUT}/tn_is/read_pair_{{sample}}/tn_is.txt", f"{OUTPUT}/cat/read_pair_{{sample}}/CAT.contig2classification.txt"],
+    f"{OUTPUT}/tn_is/read_pair_{{sample}}/tn_is.txt", f"{OUTPUT}/cat/read_pair_{{sample}}/CAT.contigs2classification.txt"],
     "abundance": [f"{OUTPUT}/kallisto/read_pair_{{sample}}/abundance.tsv", f"{OUTPUT}/shortbred_quantify/read_pair_{{sample}}/results.tsv"]
 }
 
