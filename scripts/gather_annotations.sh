@@ -37,15 +37,15 @@ for ((i=1; i<=$1; i++)); do
     fi
 
     # Copy ICE file
-    if [[ -f "$2/ice/read_pair_$i/ice_$i.txt" ]]; then
-        cp "$2/ice/read_pair_$i/ice_$i.txt" "$2/all_ice/${i}_ice.txt"
+    if [[ -f "$2/ice/read_pair_$i/ice.txt" ]]; then
+        cp "$2/ice/read_pair_$i/ice.txt" "$2/all_ice/${i}_ice.txt"
     else
         echo "ICE file for read_pair_$i does not exist. Skipping..."
     fi
 
     # Copy TN/IS file
-    if [[ -f "$2/tn_is/read_pair_$i/tn_is_$i.txt" ]]; then
-        cp "$2/tn_is/read_pair_$i/tn_is_$i.txt" "$2/all_tn_is/${i}_tn_is.txt"
+    if [[ -f "$2/tn_is/read_pair_$i/tn_is.txt" ]]; then
+        cp "$2/tn_is/read_pair_$i/tn_is.txt" "$2/all_tn_is/${i}_tn_is.txt"
     else
         echo "TN/IS file for read_pair_$i does not exist. Skipping..."
     fi

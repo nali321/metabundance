@@ -8,7 +8,7 @@ rule ice:
     input:
         assembly=f"{OUTPUT}/metaspades/read_pair_{{sample}}/contigs.fasta"
     output:
-        ice=f"{OUTPUT}/ice/read_pair_{{sample}}/ice_{{sample}}.txt"
+        ice=f"{OUTPUT}/ice/read_pair_{{sample}}/ice.txt"
     shell:
         '''
         source {CONDA_PATH}
@@ -16,5 +16,5 @@ rule ice:
         blastn -query {input.assembly} \
         -db {ICE_DB} \
         -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore" \
-        -out {OUTPUT}/ice/read_pair_{wildcards.sample}/ice_{wildcards.sample}.txt
+        -out {OUTPUT}/ice/read_pair_{wildcards.sample}/ice.txt
         '''

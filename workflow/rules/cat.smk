@@ -10,7 +10,7 @@ rule cat:
     input:
         assembly=f"{OUTPUT}/metaspades/read_pair_{{sample}}/contigs.fasta"
     output:
-        taxa=f"{OUTPUT}/cat/read_pair_{{sample}}/CAT_{{sample}}.contigs2classification.txt"
+        taxa=f"{OUTPUT}/cat/read_pair_{{sample}}/CAT.contigs2classification.txt"
     shell:
         '''
         source {CAT_PROFILE}
@@ -20,6 +20,6 @@ rule cat:
         -d {CAT_DB}/db \
         -t {CAT_DB}/tax  \
         -n 16 -o {OUTPUT}/cat/read_pair_{wildcards.sample} \
-        --out_prefix {OUTPUT}/cat/read_pair_{wildcards.sample}/CAT_{wildcards.sample}
+        --out_prefix {OUTPUT}/cat/read_pair_{wildcards.sample}/CAT
         conda deactivate
         '''
