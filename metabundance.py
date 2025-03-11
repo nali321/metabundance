@@ -97,17 +97,14 @@ rp_total = int(len(rp_order)/2)
 #get sample ids
 sample_ids = [i for i in range(1, rp_total+1)]
 
-#check if the CAT conda environment is the same as the users conda environment
+#obtain conda profile from cat path in case its from a different conda installation
 parts = cat_path.split("miniconda3", 1)
 extracted_path = parts[0] + "miniconda3"
-if extracted_path != conda_profile:
-    cat_conda = f"{extracted_path}/etc/profile.d/conda.sh"
-else:
-    cat_conda = conda_profile
+cat_profile = f"{extracted_path}/etc/profile.d/conda.sh"
 
 #create config file for rgi run
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids, "conda_path": conda_profile, "envs_path": envs_path,
-    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db, "cat_conda": cat_conda,
+    "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db, "cat_profile": cat_profile, "cat_pack": cat_pack,
     "ice_db": f"{dep}/tncentral_isfinder.fa", "tn_is_db": f"{dep}/ICE_seq_all.fas", "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": rule_type}
 
 #create config file
@@ -160,7 +157,7 @@ else:
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids,
     "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": f"{fasta_path}/annotations.FASTA",
-    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A", "cat_conda": "N/A", "ice_db": "N/A", "tn_is_db": "N/A",
+    "protein": faa_path, "cat_path": "N/A", "cat_db": "N/A", "cat_profile": "N/A", "cat_pack": "N/A", "ice_db": "N/A", "tn_is_db": "N/A",
     "muscle": f"{dep}/muscle3.8.31_i86linux64", "usearch": f"{dep}/usearch11.0.667_i86linux32", 
     "CARD_markers": f"{dep}/ShortBRED_CARD_2017_markers.faa", "rule_all": "abundance"}
 

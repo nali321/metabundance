@@ -1,9 +1,10 @@
 OUTPUT = config["output"]
 ENVS = config["envs_path"]
 CONDA_PATH = config["conda_path"]
+CAT_PROFILE = config["cat_profile"]
 CAT_PATH = config["cat_path"]
+CAT_PACK = config["cat_pack"]
 CAT_DB = config["cat_db"]
-CAT_CONDA = config["cat_conda"]
 
 rule cat:
     input:
@@ -12,9 +13,9 @@ rule cat:
         taxa=f"{OUTPUT}/cat/read_pair_{{sample}}/CAT_{{sample}}.contigs2classification.txt"
     shell:
         '''
-        source {CAT_CONDA}
+        source {CAT_PROFILE}
         conda activate {CAT_PATH}
-        {CAT_PATH} contigs \
+        {CAT_PACK} contigs \
         -c {input.assembly} \
         -d {CAT_DB}/db \
         -t {CAT_DB}/tax  \
