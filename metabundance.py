@@ -103,6 +103,9 @@ extracted_path = parts[0] + "miniconda3"
 cat_profile = f"{extracted_path}/etc/profile.d/conda.sh"
 
 #create config file for rgi run
+# d = {"output": outdir, "reads": reads_path, "sample": sample_ids, "conda_path": conda_profile, "envs_path": envs_path,
+#     "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db, "cat_profile": cat_profile, "cat_pack": cat_pack,
+#     "ice_db": f"{dep}/tncentral_isfinder/tncentral_isfinder.fa", "tn_is_db": f"{dep}/ICEberg/ICE_seq_all.fas", "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": "rule_type"}
 d = {"output": outdir, "reads": reads_path, "sample": sample_ids, "conda_path": conda_profile, "envs_path": envs_path,
     "illuminaclip": illuminaclip, "fasta": "N/A", "protein": "N/A", "cat_path": cat_path, "cat_db": cat_db, "cat_profile": cat_profile, "cat_pack": cat_pack,
     "ice_db": f"{dep}/tncentral_isfinder/tncentral_isfinder.fa", "tn_is_db": f"{dep}/ICEberg/ICE_seq_all.fas", "muscle": "N/A", "usearch": "N/A", "CARD_markers": "N/A", "rule_all": "DEBUG"}

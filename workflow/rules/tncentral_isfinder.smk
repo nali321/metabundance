@@ -16,5 +16,5 @@ rule tncentral_isfinder:
         blastn -query {input.assembly} \
         -db {TN_IS_DB} \
         -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore" \
-        -out {OUTPUT}/tn_is/read_pair_{wildcards.sample}/tn_is.txt \
+        -out {OUTPUT}/tn_is/read_pair_{wildcards.sample}/tn_is.txt
         '''
