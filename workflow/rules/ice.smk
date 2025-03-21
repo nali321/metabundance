@@ -12,7 +12,7 @@ rule ice:
     shell:
         '''
         source {CONDA_PATH}
-        conda activate {ENVS}/blast
+        conda activate {ENVS}/blast_env
         blastn -query {input.assembly} \
         -db {ICE_DB} \
         -outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore" \
