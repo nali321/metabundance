@@ -4,7 +4,7 @@ CONDA_PATH = config["conda_path"]
 DIR = config["reads"]
 ICE_DB = config["ice_db"]
 
-rule ice:
+rule ice_db:
     input:
         db=f"{ICE_DB}"
     output:
