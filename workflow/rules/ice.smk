@@ -6,7 +6,7 @@ ICE_DB = config["ice_db"]
 
 rule ice:
     input:
-        assembly=f"{OUTPUT}/metaspades/read_pair_{{sample}}/contigs.fasta"
+        assembly=f"{OUTPUT}/metaspades/read_pair_{{sample}}/contigs.fasta",
         db=f"{OUTPUT}/ice/db/ICE_seq_all.fas"
     output:
         ice=f"{OUTPUT}/ice/read_pair_{{sample}}/ice.txt"
