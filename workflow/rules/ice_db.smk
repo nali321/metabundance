@@ -8,7 +8,7 @@ rule ice_db:
     input:
         db=f"{ICE_DB}"
     output:
-        ice_db=f"{OUTPUT}/database/ice/ICE_seq_all.fas"
+        ice_db=f"{OUTPUT}/ice/db/ICE_seq_all.fas"
     shell:
         '''
         mkdir -p {OUTPUT}/ice/db
