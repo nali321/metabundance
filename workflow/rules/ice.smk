@@ -12,6 +12,7 @@ rule ice:
         ice=f"{OUTPUT}/ice/read_pair_{{sample}}/ice.txt"
     shell:
         '''
+        mkdir -p {OUTPUT}/ice/read_pair_{wildcards.sample}
         source {CONDA_PATH}
         conda activate {ENVS}/blast_env
         blastn -query {input.assembly} \
